@@ -1,0 +1,33 @@
+{
+  "name": "Audio Only Youtube",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Listen to audio only on youtube.",
+  "offline_enabled": true,
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "tabs",
+    "webRequest",
+    "*://*/*",
+    "webRequestBlocking",
+    "webNavigation"
+  ],
+  "browser_action": {
+    "default_title": "Audio Only Youtube"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.youtube.com/*"
+      ],
+      "js": [
+        "audio-only-youtube.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
