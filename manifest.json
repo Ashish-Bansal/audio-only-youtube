@@ -5,6 +5,7 @@
   "description": "Listen to audio only on youtube.",
   "offline_enabled": true,
   "icons": {
+    "19": "icon19.png",
     "38": "icon38.png",
     "48": "icon48.png",
     "128": "icon128.png"
