@@ -88,8 +88,8 @@ function processRequest(details) {
 function enableExtension() {
     chrome.browserAction.setIcon({
         path : {
-            19 : "icon19.png",
-            38 : "icon38.png",
+            19 : "img/icon19.png",
+            38 : "img/icon38.png",
         }
     });
     chrome.tabs.onUpdated.addListener(sendMessage);
@@ -103,8 +103,8 @@ function enableExtension() {
 function disableExtension() {
     chrome.browserAction.setIcon({
         path : {
-            19 : "disabled_icon19.png",
-            38 : "disabled_icon38.png",
+            19 : "img/disabled_icon19.png",
+            38 : "img/disabled_icon38.png",
         }
     });
     chrome.tabs.onUpdated.removeListener(sendMessage);
