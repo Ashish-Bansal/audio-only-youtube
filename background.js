@@ -112,11 +112,11 @@ function disableExtension() {
 }
 
 function saveSettings(disabled) {
-    chrome.storage.sync.set({audio_only_youtube_disabled: disabled});
+    chrome.storage.local.set({'audio_only_youtube_disabled': disabled});
 }
 
 chrome.browserAction.onClicked.addListener(function() {
-    chrome.storage.sync.get('audio_only_youtube_disabled', function(values) {
+    chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
         var disabled = values.audio_only_youtube_disabled;
         if (typeof disabled === "undefined") {
             disabled = false;
