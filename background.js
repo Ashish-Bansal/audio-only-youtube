@@ -133,4 +133,11 @@ chrome.browserAction.onClicked.addListener(function() {
     });
 });
 
-enableExtension();
+chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
+    var disabled = values.audio_only_youtube_disabled;
+    if (typeof disabled === "undefined") {
+        disabled = false;
+    }
+    saveSettings(disabled);
+    enableExtension();
+});
