@@ -100,13 +100,26 @@ function disableExtension() {
     chrome.webRequest.onBeforeRequest.removeListener(processRequest);
 }
 
+function saveSettings(disabled) {
+    chrome.storage.sync.set({audio_only_youtube_disabled: disabled});
+}
+
 chrome.browserAction.onClicked.addListener(function() {
-    if (disabled) {
-        enableExtension();
-    } else {
-        disableExtension();
-    }
-    disabled = !disabled;
+    chrome.storage.sync.get('audio_only_youtube_disabled', function(values) {
+        var disabled = values.audio_only_youtube_disabled;
+        if (typeof disabled === "undefined") {
+            disabled = false;
+        }
+
+        if (disabled) {
+            enableExtension();
+        } else {
+            disableExtension();
+        }
+
+        disabled = !disabled;
+        saveSettings(disabled);
+    });
 });
 
 enableExtension();

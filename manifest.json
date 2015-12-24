@@ -19,7 +19,8 @@
     "webRequest",
     "*://*/*",
     "webRequestBlocking",
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
   "browser_action": {
     "default_title": "Audio Only Youtube"
