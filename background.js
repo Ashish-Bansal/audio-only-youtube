@@ -69,22 +69,44 @@ function removeURLParameters(url, parameters) {
 }
 
 var tabIds = new map();
+var disabled = false;
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+function sendMessage(tabId) {
     chrome.tabs.sendMessage(tabId, {url: tabIds.value(tabId)});
+}
+
+function processRequest(details) {
+    if (details.url.indexOf('mime=audio') !== -1) {
+        var parametersToBeRemoved = ['range', 'rn', 'rbuf'];
+        var audioURL = removeURLParameters(details.url, parametersToBeRemoved);
+        if (tabIds.value(details.tabId) != audioURL) {
+            tabIds.insert(details.tabId, audioURL);
+            chrome.tabs.sendMessage(details.tabId, {url: audioURL});
+        }
+    }
+}
+
+function enableExtension() {
+    chrome.tabs.onUpdated.addListener(sendMessage);
+    chrome.webRequest.onBeforeRequest.addListener(
+        processRequest,
+        {urls: ["<all_urls>"]},
+        ["blocking"]
+    );
+}
+
+function disableExtension() {
+    chrome.tabs.onUpdated.removeListener(sendMessage);
+    chrome.webRequest.onBeforeRequest.removeListener(processRequest);
+}
+
+chrome.browserAction.onClicked.addListener(function() {
+    if (disabled) {
+        enableExtension();
+    } else {
+        disableExtension();
+    }
+    disabled = !disabled;
 });
 
-chrome.webRequest.onBeforeRequest.addListener(
-    function(details) {
-        if (details.url.indexOf('mime=audio') !== -1) {
-            var parametersToBeRemoved = ['range', 'rn', 'rbuf'];
-            var audioURL = removeURLParameters(details.url, parametersToBeRemoved);
-            if (tabIds.value(details.tabId) != audioURL) {
-                tabIds.insert(details.tabId, audioURL);
-                chrome.tabs.sendMessage(details.tabId, {url: audioURL});
-            }
-        }
-    },
-    {urls: ["<all_urls>"]},
-    ["blocking"]
-);
+enableExtension();
