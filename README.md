@@ -1,4 +1,4 @@
-![alt text](https://github.com/Ashish-Bansal/audio-only-youtube/raw/master/logo.png "Audio Only Youtube")
+![alt text](https://raw.githubusercontent.com/Ashish-Bansal/audio-only-youtube/master/img/logo.png "Audio Only Youtube")
 
 Audio Only Youtube (Chrome Extension)
 =======================================
