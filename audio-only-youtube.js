@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(
             var alertText = document.createElement('p');
             alertText.className = 'alert_text';
             alertText.innerHTML = 'Audio Only Youtube Chrome Extension is running. It disables video which saves' +
-                ' bandwidth when you just want to listen to songs. If you want to watch viewo, click on the' +
+                ' bandwidth when you just want to listen to songs. If you want to watch video, click on the' +
                 ' extension icon above and refresh your the page.';
 
             extensionAlert.appendChild(alertText);
