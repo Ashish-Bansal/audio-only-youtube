@@ -1,0 +1,21 @@
+.audio_only_div {
+    z-index: 9999;
+    background-color: #272B2E;
+    color: #CC6633;
+    cursor: pointer;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50%;
+    box-shadow: 0 1px 50px 0 rgba(0,0,0,.3);
+    font-size: 15px;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.alert_text {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
