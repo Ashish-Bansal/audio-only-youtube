@@ -69,7 +69,6 @@ function removeURLParameters(url, parameters) {
 }
 
 var tabIds = new map();
-var disabled = false;
 
 function sendMessage(tabId) {
     chrome.tabs.sendMessage(tabId, {url: tabIds.value(tabId)});
