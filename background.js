@@ -76,7 +76,9 @@ function removeURLParameters(url, parameters) {
 var tabIds = new map();
 
 function sendMessage(tabId) {
-    chrome.tabs.sendMessage(tabId, {url: tabIds.value(tabId)});
+    if (tabIds.contains(tabId)) {
+        chrome.tabs.sendMessage(tabId, {url: tabIds.value(tabId)});
+    }
 }
 
 function processRequest(details) {
