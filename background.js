@@ -43,6 +43,11 @@ var map = (function() {
                 delete _map[key];
             }
         };
+
+        this.clear = function() {
+            _map = Object.create(null);
+            _keys = [];
+        }
     }
 
     return map;
@@ -109,6 +114,8 @@ function disableExtension() {
     });
     chrome.tabs.onUpdated.removeListener(sendMessage);
     chrome.webRequest.onBeforeRequest.removeListener(processRequest);
+    tabIds.clear();
+
 }
 
 function saveSettings(disabled) {
