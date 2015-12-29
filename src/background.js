@@ -143,7 +143,12 @@ chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
     var disabled = values.audio_only_youtube_disabled;
     if (typeof disabled === "undefined") {
         disabled = false;
+        saveSettings(disabled);
     }
-    saveSettings(disabled);
-    enableExtension();
+
+    if (disabled) {
+        disableExtension();
+    } else {
+        enableExtension();
+    }
 });
