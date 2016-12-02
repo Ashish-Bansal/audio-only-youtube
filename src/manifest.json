@@ -28,7 +28,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://www.youtube.com/*"
+        "*://*/*"
       ],
       "js": [
         "audio-only-youtube.js"
@@ -36,7 +36,8 @@
       "css": [
         "audio-only-youtube.css"
       ],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "all_frames": true
     }
   ]
 }
