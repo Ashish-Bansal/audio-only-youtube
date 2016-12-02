@@ -16,6 +16,11 @@ chrome.runtime.onMessage.addListener(
         var url = request.url;
         var videoElements = document.getElementsByTagName('video');
         var videoElement = videoElements[0];
+        if (typeof videoElement == "undefined") {
+            console.log("Audio Only Youtube - Video element undefined in this frame!");
+            return;
+        }
+
         videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
         if (document.getElementsByClassName('audio_only_div').length == 0) {
             var extensionAlert = document.createElement('div');
