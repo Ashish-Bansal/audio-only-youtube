@@ -20,7 +20,11 @@ chrome.runtime.onMessage.addListener(
             console.log("Audio Only Youtube - Video element undefined in this frame!");
             return;
         }
-
+        videoRect = videoElement.getBoundingClientRect();
+        if(videoRect.width === 0 && videoRect.height === 0){
+            console.log("Audio Only Youtube - Video element not visible!");
+            return;
+        }
         videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
         if (document.getElementsByClassName('audio_only_div').length == 0) {
             var extensionAlert = document.createElement('div');
