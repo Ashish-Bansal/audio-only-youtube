@@ -137,8 +137,14 @@ chrome.browserAction.onClicked.addListener(function() {
         disabled = !disabled;
         saveSettings(disabled);
     });
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+        url: "*://www.youtube.com/*"
+    }, function(tabs) {
+        if (tabs.length > 0) {
+            chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+        }
     });
 });
 
