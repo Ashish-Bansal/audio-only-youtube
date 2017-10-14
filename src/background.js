@@ -114,8 +114,6 @@ function disableExtension() {
             38 : "img/disabled_icon38.png",
         }
     });
-    chrome.tabs.onUpdated.removeListener(sendMessage);
-    chrome.webRequest.onBeforeRequest.removeListener(processRequest);
     tabIds.clear();
 
 }
