@@ -137,6 +137,9 @@ chrome.browserAction.onClicked.addListener(function() {
         disabled = !disabled;
         saveSettings(disabled);
     });
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+    });
 });
 
 chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
