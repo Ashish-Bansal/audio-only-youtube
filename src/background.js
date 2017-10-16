@@ -1,142 +1,106 @@
-var map = (function() {
-    var _maxLength = 200;
+const removeURLParameters = (url, parameters) => {
+    parameters.forEach(parameter => {
+        const urlparts = url.split('?');
+        if (urlparts.length < 2) return;
+        const prefix = encodeURIComponent(parameter) + '=';
+        const pars = urlparts[1]
+                .split(/[&;]/g)
+                .filter(par => par.lastIndexOf(prefix,0) === -1);
 
-    var _map = Object.create(null);
-    var _keys = [];
-
-    function map() {
-        this.len = function() {
-            return _keys.length;
-        };
-
-        this.setMaxLength = function(len) {
-            _maxLength = len;
-        };
-
-        this.getMaxLength = function() {
-            return _maxLength;
-        };
-
-        this.insert = function(key, value) {
-            if (this.len.apply() == this.getMaxLength.apply() &&
-                typeof _map[key] == "undefined") {
-                var id = _keys.shift();
-                delete _map[id];
-            }
-
-            _map[key] = value;
-            if (!this.contains(key)) {
-                _keys.push(key);
-            }
-        };
-
-        this.value = function(key) {
-            return _map[key];
-        };
-
-        this.contains = function(key) {
-            return typeof _map[key] != "undefined";
-        };
-
-        this.remove = function(key) {
-            if (this.contains(key)) {
-                delete _map[key];
-            }
-        };
-
-        this.clear = function() {
-            _map = Object.create(null);
-            _keys = [];
-        }
-    }
-
-    return map;
-
-})();
-
-function removeURLParameters(url, parameters) {
-    parameters.forEach(function(parameter) {
-        var urlparts = url.split('?');
-        if (urlparts.length >= 2) {
-            var prefix = encodeURIComponent(parameter) + '=';
-            var pars = urlparts[1].split(/[&;]/g);
-
-            for (var i = pars.length; i-- > 0;) {
-                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-                    pars.splice(i, 1);
-                }
-            }
-
-            url = urlparts[0] + '?' + pars.join('&');
-        }
+        url = `${urlparts[0]}?${pars.join('&')}`;
     });
     return url;
-}
+};
 
-var tabIds = new map();
+const saveSettings = (tab) => {
+    chrome.tabs.query({}, allTabs => {
+        chrome.storage.local.get('audio_only_youtube_disabled', values => {
+            let aoySettings = values.audio_only_youtube_disabled;
+            if(!aoySettings.push)
+                aoySettings = [];
+            
+            //Cleanning up unnecessary tab info
+            aoySettings = aoySettings.filter(tabSettings => {
+                if(tabSettings.tabId === tab.id) return false;
+                return allTabs.find(t => t.id === tabSettings.tabId);
+            });
+            aoySettings.push({
+                'tabId': tab.id,
+                'aoyDisabled': tab.aoyDisabled
+            });
+            chrome.storage.local.set({
+                'audio_only_youtube_disabled': aoySettings
+            });
+        });
+    });
+};
 
-function sendMessage(tabId) {
-    if (tabIds.contains(tabId)) {
-        chrome.tabs.sendMessage(tabId, {url: tabIds.value(tabId)});
+const getSettings = () => {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if(!tabs)
+                tabs = [];
+
+            const tab = {...tabs[0]};
+            if(!tab.id) return;
+            chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
+                let aoySettings = values.audio_only_youtube_disabled;
+                if(!aoySettings.find)
+                    aoySettings = [];
+
+                aoySettings = aoySettings.find(tabSettings => tabSettings.tabId === tab.id);
+
+                const tabSettings = {...aoySettings};
+                tab.aoyDisabled = tabSettings.aoyDisabled;
+                resolve(tab);
+            });
+        });
+    });
+};
+const extensionClick = () => {
+    getSettings().then(
+    tab => {
+        tab.aoyDisabled = !tab.aoyDisabled;
+        saveSettings(tab);
+        updateTab();
+    });
+};
+
+const sendMessage = tabDetails => {
+    getSettings().then(
+    tab => {
+        if(tab.id !== tabDetails.id) return;
+
+        if(typeof tab.aoyDisabled === "undefined")
+            tab.aoyDisabled = true;
+
+        if(!tab.aoyDisabled)
+            chrome.tabs.sendMessage(tabDetails.id, tabDetails);
+    });
+};
+
+const processRequest = details => {
+    if (details.url.indexOf('mime=audio') === -1) return;
+    const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
+    const tabDetails = {
+        id: details.tabId,
+        url: removeURLParameters(details.url, parametersToBeRemoved)
     }
-}
+    sendMessage(tabDetails);
+};
 
-function processRequest(details) {
-    if (details.url.indexOf('mime=audio') !== -1) {
-        var parametersToBeRemoved = ['range', 'rn', 'rbuf'];
-        var audioURL = removeURLParameters(details.url, parametersToBeRemoved);
-        if (tabIds.value(details.tabId) != audioURL) {
-            tabIds.insert(details.tabId, audioURL);
-            chrome.tabs.sendMessage(details.tabId, {url: audioURL});
-        }
-    }
-}
+const checkTab = () => {
+    getSettings().then(
+    tab => {
+        if(typeof tab.aoyDisabled === "undefined")
+            tab.aoyDisabled = true;
 
-function enableExtension() {
-    chrome.browserAction.setIcon({
-        path : {
-            19 : "img/icon19.png",
-            38 : "img/icon38.png",
-        }
+        handleExtension(tab.aoyDisabled);
+        saveSettings(tab);
     });
-    chrome.tabs.onUpdated.addListener(sendMessage);
-    chrome.webRequest.onBeforeRequest.addListener(
-        processRequest,
-        {urls: ["<all_urls>"]},
-        ["blocking"]
-    );
-}
+};
 
-function disableExtension() {
-    chrome.browserAction.setIcon({
-        path : {
-            19 : "img/disabled_icon19.png",
-            38 : "img/disabled_icon38.png",
-        }
-    });
-    chrome.tabs.onUpdated.removeListener(sendMessage);
-    chrome.webRequest.onBeforeRequest.removeListener(processRequest);
-    tabIds.clear();
-
-}
-
-function saveSettings(disabled) {
-    chrome.storage.local.set({'audio_only_youtube_disabled': disabled});
-}
-
-chrome.browserAction.onClicked.addListener(function() {
-    chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
-        var disabled = values.audio_only_youtube_disabled;
-
-        if (disabled) {
-            enableExtension();
-        } else {
-            disableExtension();
-        }
-
-        disabled = !disabled;
-        saveSettings(disabled);
-    });
+const updateTab = () => {
     chrome.tabs.query({
         active: true,
         currentWindow: true,
@@ -146,18 +110,39 @@ chrome.browserAction.onClicked.addListener(function() {
             chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
         }
     });
-});
+};
 
-chrome.storage.local.get('audio_only_youtube_disabled', function(values) {
-    var disabled = values.audio_only_youtube_disabled;
-    if (typeof disabled === "undefined") {
-        disabled = false;
-        saveSettings(disabled);
-    }
+const handleListeners = () => {
+    chrome.tabs.onUpdated.removeListener(checkTab);
+    chrome.tabs.onUpdated.addListener(checkTab);
 
-    if (disabled) {
-        disableExtension();
-    } else {
-        enableExtension();
-    }
-});
+    chrome.tabs.onActivated.removeListener(checkTab);
+    chrome.tabs.onActivated.addListener(checkTab);
+    
+    chrome.browserAction.onClicked.removeListener(extensionClick);
+    chrome.browserAction.onClicked.addListener(extensionClick);
+};
+
+const handleExtension = (disabled) => {
+    const imgStr = (disabled) ? "disabled_" : "";
+
+    chrome.browserAction.setIcon({
+        path : {
+            19 : "img/"+imgStr+"icon19.png",
+            38 : "img/"+imgStr+"icon38.png",
+        }
+    });
+
+    chrome.webRequest.onBeforeRequest.removeListener(processRequest);
+    
+    if(disabled) return;
+
+    chrome.webRequest.onBeforeRequest.addListener(
+        processRequest,
+        {urls: ["<all_urls>"]},
+        ["blocking"]
+    );
+
+};
+
+handleListeners();
