@@ -14,8 +14,8 @@ const removeURLParameters = (url, parameters) => {
 
 const saveSettings = (tab) => {
     chrome.tabs.query({}, allTabs => {
-        chrome.storage.local.get('audio_only_youtube_disabled', values => {
-            let aoySettings = values.audio_only_youtube_disabled;
+        chrome.storage.local.get('audio_only_youtube', values => {
+            let aoySettings = values.audio_only_youtube || [];
             if(!aoySettings.push)
                 aoySettings = [];
             
@@ -29,7 +29,7 @@ const saveSettings = (tab) => {
                 'aoyDisabled': tab.aoyDisabled
             });
             chrome.storage.local.set({
-                'audio_only_youtube_disabled': aoySettings
+                'audio_only_youtube': aoySettings
             });
         });
     });
@@ -43,8 +43,8 @@ const getSettings = () => {
 
             const tab = {...tabs[0]};
             if(!tab.id) return;
-            chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-                let aoySettings = values.audio_only_youtube_disabled;
+            chrome.storage.local.get('audio_only_youtube', (values) => {
+                let aoySettings = values.audio_only_youtube || [];
                 if(!aoySettings.find)
                     aoySettings = [];
 
