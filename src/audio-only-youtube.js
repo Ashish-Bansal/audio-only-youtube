@@ -1,10 +1,23 @@
 function makeSetAudioURL(videoElement, url) {
+    function setBackgroundImage() {
+        var vid = window.location.search.split('v=')[1];
+        var pos = vid.indexOf('&');
+        if(pos != -1) {
+            vid = vid.substring(0, pos);
+        }
+
+        var bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
+        videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
+        videoElement.style.backgroundSize = '80%';
+    }
+
     function setAudioURL() {
-        if (videoElement.src  != url) {
+        if (videoElement.src != url) {
             videoElement.pause();
             videoElement.src = url;
             videoElement.currentTime = 0;
             videoElement.play();
+            setBackgroundImage();
         }
     }
     setAudioURL();
@@ -25,6 +38,7 @@ chrome.runtime.onMessage.addListener(
             console.log("Audio Only Youtube - Video element not visible!");
             return;
         }
+
         videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
         if (document.getElementsByClassName('audio_only_div').length == 0) {
             var extensionAlert = document.createElement('div');
@@ -32,9 +46,8 @@ chrome.runtime.onMessage.addListener(
 
             var alertText = document.createElement('p');
             alertText.className = 'alert_text';
-            alertText.innerHTML = 'Audio Only Youtube Chrome Extension is running. It disables video which saves' +
-                ' bandwidth when you just want to listen to songs. If you want to watch video, click on the' +
-                ' extension icon above and refresh your page.';
+            alertText.innerHTML = 'Audio Only. To watch video, ' +
+                'click on the extension icon above and refresh your page.';
 
             extensionAlert.appendChild(alertText);
             var parent = videoElement.parentNode.parentNode;
