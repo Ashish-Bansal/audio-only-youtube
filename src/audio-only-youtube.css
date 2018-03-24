@@ -8,10 +8,11 @@
     pointer-events: none;
     opacity: 0.5;
 }
-#movie_player:hover .audio_only_div,
+
 #movie_player:active .audio_only_div {
-    display:none!important
+    display:none !important
 }
+
 .alert_text {
     position: relative;
     top: 10%;
