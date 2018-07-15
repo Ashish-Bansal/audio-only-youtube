@@ -31,10 +31,10 @@
         "*://*/*"
       ],
       "js": [
-        "js/audio-only-youtube.js"
+        "js/content-script.js"
       ],
       "css": [
-        "css/audio-only-youtube.css"
+        "css/content-script.css"
       ],
       "run_at": "document_start",
       "all_frames": true
