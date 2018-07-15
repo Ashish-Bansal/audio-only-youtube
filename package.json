@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
-    "start": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js"
+    "start": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.5.2",
@@ -18,9 +19,16 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
-    "eslint": "^5.1.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^17.0.0",
     "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "prettier": "^1.13.7",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack-cli": "^3.0.8"
   }
