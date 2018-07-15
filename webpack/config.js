@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
+    'content-script': './src/js/content-script',
     background: './src/js/background',
     options: './src/js/options'
   },
