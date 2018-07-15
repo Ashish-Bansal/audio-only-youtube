@@ -9,7 +9,8 @@
   "scripts": {
     "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
     "start": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "prettier": "prettier 'src/**/*.@(js|json)' --write"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.5.2",

@@ -11,9 +11,7 @@
     "128": "img/icon128.png"
   },
   "background": {
-    "scripts": [
-      "js/background.js"
-    ]
+    "scripts": ["js/background.js"]
   },
   "permissions": [
     "tabs",
@@ -27,15 +25,9 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "js/content-script.js"
-      ],
-      "css": [
-        "css/content-script.css"
-      ],
+      "matches": ["*://*/*"],
+      "js": ["js/content-script.js"],
+      "css": ["css/content-script.css"],
       "run_at": "document_start",
       "all_frames": true
     }
