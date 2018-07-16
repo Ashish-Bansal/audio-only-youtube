@@ -1,0 +1,36 @@
+{
+  "name": "audio-only-youtube",
+  "displayName": "Audio Only Youtube",
+  "version": "0.7.0",
+  "description": "Enables you to disable video streams on youtube and listen audio",
+  "engines": {
+    "node": "9.11.2"
+  },
+  "scripts": {
+    "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
+    "start": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
+    "lint": "eslint src/",
+    "prettier": "prettier 'src/**/*.@(js|json)' --write"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^4.5.2",
+    "crx-webpack-plugin": "^0.1.5",
+    "webpack": "^4.16.0",
+    "webpack-version-file-plugin": "^0.3.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "prettier": "^1.13.7",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack-cli": "^3.0.8"
+  }
+}

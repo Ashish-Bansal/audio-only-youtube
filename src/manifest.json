@@ -1,8 +1,8 @@
 {
-  "name": "Audio Only Youtube",
-  "version": "0.2",
+  "name": "<%= package.displayName %>",
+  "version": "<%= package.version %>",
   "manifest_version": 2,
-  "description": "Listen to audio only on youtube.",
+  "description": "<%= package.description %>",
   "offline_enabled": true,
   "icons": {
     "19": "img/icon19.png",
@@ -11,9 +11,7 @@
     "128": "img/icon128.png"
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["js/background.js"]
   },
   "permissions": [
     "tabs",
@@ -27,18 +25,12 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "audio-only-youtube.js"
-      ],
-      "css": [
-        "audio-only-youtube.css"
-      ],
+      "matches": ["*://*/*"],
+      "js": ["js/content-script.js"],
+      "css": ["css/content-script.css"],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
-  "options_page": "options.html"
+  "options_page": "html/options.html"
 }
