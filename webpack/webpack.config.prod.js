@@ -20,11 +20,9 @@ module.exports = _.merge({}, config, {
 
   // devtool: 'eval',
   plugins: [
-    new CopyWebpackPlugin([
-      { from: './src' }
-    ], {
-      ignore: ['js/**/*', 'manifest.json'],
-      copyUnmodified: true
+    new CopyWebpackPlugin([{ from: './src' }], {
+      ignore: ['manifest.json'],
+      copyUnmodified: true,
     }),
     new VersionFilePlugin({
       packageFile: path.resolve(__dirname, '../package.json'),
@@ -35,7 +33,7 @@ module.exports = _.merge({}, config, {
       keyFile: '../sign.pem',
       contentPath: '../build/prod',
       outputPath: '../build',
-      name: appName
+      name: appName,
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
     new UglifyJsPlugin({
@@ -48,5 +46,5 @@ module.exports = _.merge({}, config, {
       },
       sourceMap: false,
     }),
-  ]
+  ],
 });

@@ -3,34 +3,47 @@
   "displayName": "Audio Only Youtube",
   "version": "0.7.0",
   "description": "Enables you to disable video streams on youtube and listen audio",
-  "engines": {
-    "node": "9.11.2"
-  },
+  "main": "index.js",
+  "repository": "git@github.com:Ashish-Bansal/audio-only-youtube.git",
+  "author": "Ashish Bansal <bansal.ashish096@gmail.com>",
+  "license": "GPLv3",
+  "private": true,
   "scripts": {
-    "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
-    "start": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
-    "lint": "eslint src/",
-    "prettier": "prettier 'src/**/*.@(js|json)' --write"
-  },
-  "dependencies": {
-    "copy-webpack-plugin": "^4.5.2",
-    "crx-webpack-plugin": "^0.1.5",
-    "webpack": "^4.16.0",
-    "webpack-version-file-plugin": "^0.3.3"
+    "dev": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.dev.js",
+    "prod": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
+    "cz": "npx git-cz",
+    "commitmsg": "npx commitlint -E GIT_PARAMS",
+    "precommit": "npx lint-staged",
+    "postcommit": "git update-index --again"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "@types/chrome": "0.0.69",
+    "awesome-typescript-loader": "^5.2.0",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "prettier": "^1.13.7",
+    "commitizen": "^2.10.1",
+    "copy-webpack-plugin": "^4.5.2",
+    "crx-webpack-plugin": "^0.1.5",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^0.14.3",
+    "imagemin-lint-staged": "^0.3.0",
+    "lint-staged": "^7.2.0",
+    "stylelint": "^9.3.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "^2.9.2",
     "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack-cli": "^3.0.8"
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-version-file-plugin": "^0.3.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

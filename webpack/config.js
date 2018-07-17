@@ -2,21 +2,23 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    'content-script': './src/js/content-script',
-    background: './src/js/background',
-    options: './src/js/options'
+    'content-script': './src/ts/content-script',
+    background: './src/ts/background',
+    options: './src/ts/options',
   },
   output: {
-    filename: './js/[name].js'
+    filename: './js/[name].js',
   },
   resolve: {
-    modules: [path.join(__dirname, 'src'), 'node_modules']
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      loaders: ['babel-loader'],
-      include: path.resolve(__dirname, '../src/js')
-    }]
-  }
+    rules: [
+      {
+        test: /\.ts$/,
+        loaders: ['awesome-typescript-loader', 'babel-loader'],
+        include: path.resolve(__dirname, '../src/ts'),
+      },
+    ],
+  },
 };
