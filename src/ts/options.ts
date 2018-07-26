@@ -1,9 +1,16 @@
+const showThumbnail: any = document.getElementById('show-thumbnail');
+
 // Saves options to chrome.storage
-function saveOptions() {
-  const showThumbnail = document.getElementById('show-thumbnail');
-  chrome.storage.sync.set({
-    showThumbnail: showThumbnail.checked,
-  });
+function saveOptions(): void {
+  if (showThumbnail) {
+    chrome.storage.sync.set({
+      showThumbnail: showThumbnail.checked,
+    });
+  }
+}
+
+if (showThumbnail) {
+  document.addEventListener('change', saveOptions);
 }
 
 // Restores select box and checkbox state using the preferences
@@ -14,11 +21,9 @@ function restoreOptions() {
       showThumbnail: true,
     },
     (items) => {
-      document.getElementById('show-thumbnail').checked = items.showThumbnail;
+      showThumbnail.checked = items.showThumbnail;
     }
   );
 }
+
 document.addEventListener('DOMContentLoaded', restoreOptions);
-document
-  .getElementById('show-thumbnail')
-  .addEventListener('change', saveOptions);
