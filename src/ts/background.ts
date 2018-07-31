@@ -2,8 +2,8 @@ class Background {
   private tabIds = new Map();
 
   constructor() {
-    chrome.storage.local.get('audio_only_youtube_disabled', (values: any) => {
-      let disabled = values.audio_only_youtube_disabled;
+    chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
+      let disabled: boolean = values.audio_only_youtube_disabled;
       if (typeof disabled === 'undefined') {
         disabled = false;
         this.saveSettings(disabled);
@@ -17,8 +17,8 @@ class Background {
     });
 
     chrome.browserAction.onClicked.addListener(() => {
-      chrome.storage.local.get('audio_only_youtube_disabled', (values: any) => {
-        let disabled = values.audio_only_youtube_disabled;
+      chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
+        let disabled: boolean = values.audio_only_youtube_disabled;
 
         if (disabled) {
           this.enableExtension();
@@ -36,34 +36,33 @@ class Background {
           currentWindow: true,
           url: '*://www.youtube.com/*',
         },
-        (tabs: any) => {
+        (tabs) => {
           if (tabs.length > 0) {
-            chrome.tabs.update(tabs[0].id, { url: tabs[0].url });
+            chrome.tabs.update(tabs[0].id!, { url: tabs[0].url });
           }
         }
       );
     });
   }
 
-  public removeURLParameters(url: string, parameters: any) {
+  public removeURLParameters(
+    url: string,
+    parameters: any[]
+  ): string[] | undefined {
     const urlParts = url.split('?');
     if (urlParts.length < 2) {
       return;
     }
-
-    let currentParameters = urlParts[1].split(/[&;]/g);
-    for (const parameter of parameters) {
-      const prefix = encodeURIComponent(`${parameter}=`);
-      currentParameters = currentParameters.filter(
-        (p) => !p.startsWith(prefix)
-      );
-    }
-
-    url = `${urlParts[0]}?${currentParameters.join('&')}`;
-    return url;
+    const currentParameters = urlParts[1].split(/[&;]/g);
+    const encodedParameters = parameters.map((para) =>
+      encodeURIComponent(`${para}=`)
+    );
+    return currentParameters.filter((p) => {
+      encodedParameters.every((enc) => p.startsWith(enc));
+    });
   }
 
-  public processRequest(details: any) {
+  public processRequest(details: any): void {
     const { url, tabId } = details;
     if (url.includes('mime=audio')) {
       return;
@@ -76,7 +75,7 @@ class Background {
     }
   }
 
-  public sendMessage(tabId: number) {
+  public sendMessage(tabId: number): void {
     if (this.tabIds.has(tabId)) {
       chrome.tabs.sendMessage(tabId, {
         url: this.tabIds.get(tabId),
@@ -84,7 +83,7 @@ class Background {
     }
   }
 
-  public enableExtension() {
+  public enableExtension(): void {
     chrome.browserAction.setIcon({
       path: {
         19: 'img/icon19.png',
@@ -99,7 +98,7 @@ class Background {
     );
   }
 
-  public disableExtension() {
+  public disableExtension(): void {
     chrome.browserAction.setIcon({
       path: {
         19: 'img/disabled_icon19.png',
@@ -111,7 +110,7 @@ class Background {
     this.tabIds.clear();
   }
 
-  public saveSettings(disabled: any) {
+  public saveSettings(disabled: boolean) {
     chrome.storage.local.set({ audio_only_youtube_disabled: disabled });
   }
 }

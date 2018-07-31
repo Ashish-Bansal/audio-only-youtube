@@ -15,7 +15,7 @@ if (showThumbnail) {
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
-function restoreOptions() {
+function restoreOptions(): void {
   chrome.storage.sync.get(
     {
       showThumbnail: true,

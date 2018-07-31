@@ -1,5 +1,8 @@
-function makeSetAudioURL(videoElement: HTMLVideoElement, url: string) {
-  function setBackgroundImage() {
+function makeSetAudioURL(
+  videoElement: HTMLVideoElement,
+  url: string
+): void | any {
+  function setBackgroundImage(): void {
     let vid = window.location.search.split('v=')[1];
     const pos = vid.indexOf('&');
     if (pos !== -1) {
@@ -11,7 +14,7 @@ function makeSetAudioURL(videoElement: HTMLVideoElement, url: string) {
     videoElement.style.backgroundSize = '80%';
   }
 
-  function setAudioURL() {
+  function setAudioURL(): void {
     if (videoElement.src !== url) {
       videoElement.pause();
       videoElement.src = url;
@@ -24,19 +27,16 @@ function makeSetAudioURL(videoElement: HTMLVideoElement, url: string) {
       });
     }
   }
-  setAudioURL();
-  return setAudioURL;
+  return setAudioURL();
 }
 
-chrome.runtime.onMessage.addListener((request: any) => {
+chrome.runtime.onMessage.addListener((request) => {
   const videoElement = window.document.getElementsByTagName('video')[0];
   if (typeof videoElement !== 'undefined') {
     const url = request.url;
 
     const videoRect = videoElement.getBoundingClientRect();
     if (videoRect.width === 0 && videoRect.height === 0) {
-      // tslint:disable-next-line:no-console
-      console.log('Audio Only Youtube - Video element not visible!');
       return;
     }
 
