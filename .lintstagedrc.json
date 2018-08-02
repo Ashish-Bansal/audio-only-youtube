@@ -1,8 +1,8 @@
 {
   "linters": {
     "*.ts": ["tslint --fix", "prettier --write \"**/*.ts\"", "git add"],
-    "*.{json, css, md}": [
-      "prettier --write \"**/*.{json,scss, less, md}\"",
+    "*.{json, css, scss, less, md}": [
+      "prettier --write \"**/*.{json, css, scss, less, md}\"",
       "git add"
     ],
     "*.{png,jpeg,jpg,gif,svg}": ["imagemin-lint-staged", "git add"]

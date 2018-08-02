@@ -79,5 +79,5 @@ typings/
 # Serverless directories
 .serverless
 
-# build
-build/
+# dist
+dist/
