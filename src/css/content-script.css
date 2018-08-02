@@ -1,20 +1,20 @@
 .audio_only_div {
-    z-index: 10;
-    color: #ff9494;
-    cursor: pointer;
-    position: relative;
-    font-size: 15px;
-    font-weight: 600;
-    pointer-events: none;
-    opacity: 0.5;
+  z-index: 10;
+  color: #ff9494;
+  cursor: pointer;
+  position: relative;
+  font-size: 15px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 #movie_player:active .audio_only_div {
-    display: none !important;
+  display: none !important;
 }
 
 .alert_text {
-    position: relative;
-    top: 10%;
-    text-align: center;
+  position: relative;
+  top: 10%;
+  text-align: center;
 }
