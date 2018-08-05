@@ -9,9 +9,10 @@
   "license": "GPLv3",
   "private": true,
   "scripts": {
-    "build:dev": "concurrently --kill-others 'npm:build:manifest' 'npm:parcel:dev'",
-    "build:prod": "concurrently --kill-others 'npm:build:manifest' 'npm:parcel:prod'",
+    "build:dev": "concurrently --kill-others 'npm:watch:manifest' 'npm:parcel:dev'",
+    "build:prod": "npm run build:manifest && npm run parcel:prod",
     "build:manifest": "node manifest.js",
+    "watch:manifest": "node manifest.js --watch",
     "parcel:dev": "parcel ./src/*/**/*.*",
     "parcel:prod": "parcel build ./src/*/**/*.*",
     "commit": "npx git-cz",
@@ -33,7 +34,8 @@
     "prettier": "1.14.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.14.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "yargs": "^12.0.1"
   },
   "config": {
     "commitizen": {

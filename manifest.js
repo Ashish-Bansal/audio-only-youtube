@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const root = path.resolve(__dirname);
+const argv = require('yargs').argv;
 
 const dir = {
   package: path.join(root, 'package.json'),
@@ -33,5 +34,8 @@ if (!fs.existsSync(dir.dist)){
 }
 
 createManifest(true);
-watchOut(dir.manifest, createManifest, true);
-watchOut(dir.package, createManifest, true);
+
+if (argv.watch) {
+  watchOut(dir.manifest, createManifest, true);
+  watchOut(dir.package, createManifest, true);
+}
