@@ -28,37 +28,10 @@ function watchOut(something, callback, log) {
   });
 }
 
-if (fs.existsSync(dir.distManifest)) {
-  watchOut(
-    dir.manifest,
-    () => {
-      createManifest();
-    },
-    true
-  );
-  watchOut(
-    dir.package,
-    () => {
-      createManifest();
-    },
-    true
-  );
-} else {
-  if (fs.existsSync(dir.dist)) {
-    createManifest(true);
-    watchOut(
-      dir.manifest,
-      () => {
-        createManifest();
-      },
-      true
-    );
-    watchOut(
-      dir.package,
-      () => {
-        createManifest();
-      },
-      true
-    );
-  }
+if (!fs.existsSync(dir.dist)){
+  fs.mkdirSync(dir.dist);
 }
+
+createManifest(true);
+watchOut(dir.manifest, createManifest, true);
+watchOut(dir.package, createManifest, true);
