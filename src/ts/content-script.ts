@@ -14,6 +14,25 @@ function makeSetAudioURL(
     videoElement.style.backgroundSize = '80%';
   }
 
+  function setNoBackgroundImageStyle(): void {
+    const gradientTop = document.querySelector('ytp-gradient-top');
+    const gradientBottom = document.querySelector('ytp-gradient-bottom');
+    const moviePlayer = document.getElementById('movie_player');
+    const playerContanerInner = document.getElementById(
+      'player-container-inner'
+    );
+    if (gradientTop && gradientBottom) {
+      gradientTop.remove();
+      gradientBottom.remove();
+    }
+    if (moviePlayer) {
+      moviePlayer.style.height = null;
+    }
+    if (playerContanerInner) {
+      playerContanerInner.style.paddingTop = '6rem';
+    }
+  }
+
   function setAudioURL(): void {
     if (videoElement.src !== url) {
       videoElement.pause();
@@ -23,6 +42,8 @@ function makeSetAudioURL(
       chrome.storage.sync.get({ showThumbnail: true }, (item) => {
         if (item.showThumbnail) {
           setBackgroundImage();
+        } else {
+          setNoBackgroundImageStyle();
         }
       });
     }
