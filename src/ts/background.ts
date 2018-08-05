@@ -90,9 +90,9 @@ class Background {
         38: 'img/icon38.png',
       },
     });
-    chrome.tabs.onUpdated.addListener(this.sendMessage);
+    chrome.tabs.onUpdated.addListener(() => this.sendMessage);
     chrome.webRequest.onBeforeRequest.addListener(
-      this.processRequest,
+      () => this.processRequest,
       { urls: ['<all_urls>'] },
       ['blocking']
     );
@@ -105,8 +105,8 @@ class Background {
         38: 'img/disabled_icon38.png',
       },
     });
-    chrome.tabs.onUpdated.removeListener(this.sendMessage);
-    chrome.webRequest.onBeforeRequest.removeListener(this.processRequest);
+    chrome.tabs.onUpdated.removeListener(() => this.sendMessage);
+    chrome.webRequest.onBeforeRequest.removeListener(() => this.processRequest);
     this.tabIds.clear();
   }
 
