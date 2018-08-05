@@ -45,26 +45,25 @@ class Background {
     });
   }
 
-  public removeURLParameters = (
-    url: string,
-    parameters: any[]
-  ): string[] | undefined => {
+  public removeURLParameters = (url: string, parameters: any[]): string => {
     const urlParts = url.split('?');
     if (urlParts.length < 2) {
-      return;
+      return '';
     }
     const currentParameters = urlParts[1].split(/[&;]/g);
-    const encodedParameters = parameters.map((para) =>
-      encodeURIComponent(`${para}=`)
+    const encodedParameters = parameters.map(
+      (para) => `${encodeURIComponent(para)}=`
     );
-    return currentParameters.filter((p) => {
-      encodedParameters.every((enc) => p.startsWith(enc));
-    });
+    const filteredParameters = currentParameters.filter(
+      (p) => !encodedParameters.some((enc) => p.startsWith(enc))
+    );
+
+    return `${urlParts[0]}?${filteredParameters.join('&')}`;
   };
 
   public processRequest = (details: any): void => {
     const { url, tabId } = details;
-    if (url.includes('mime=audio')) {
+    if (!url.includes('mime=audio')) {
       return;
     }
     const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
