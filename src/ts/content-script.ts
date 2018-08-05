@@ -27,7 +27,9 @@ function makeSetAudioURL(
       });
     }
   }
-  return setAudioURL();
+
+  setAudioURL();
+  return setAudioURL;
 }
 
 chrome.runtime.onMessage.addListener((request) => {
