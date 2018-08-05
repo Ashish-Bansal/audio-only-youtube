@@ -15,6 +15,7 @@
     "watch:manifest": "node manifest.js --watch",
     "parcel:dev": "parcel ./src/*/**/*.*",
     "parcel:prod": "parcel build ./src/*/**/*.*",
+    "crx:pack": "cd dist && npx crx pack -o audio-only-youtube.crx",
     "commit": "npx git-cz",
     "commitmsg": "npx commitlint -E GIT_PARAMS",
     "precommit": "npx lint-staged",
@@ -26,6 +27,7 @@
     "@types/chrome": "0.0.71",
     "commitizen": "^2.10.1",
     "concurrently": "^3.6.1",
+    "crx": "^3.2.1",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
     "imagemin-lint-staged": "^0.3.0",
@@ -41,5 +43,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "dependencies": {}
 }
