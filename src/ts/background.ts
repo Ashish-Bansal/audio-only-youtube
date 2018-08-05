@@ -45,10 +45,10 @@ class Background {
     });
   }
 
-  public removeURLParameters(
+  public removeURLParameters = (
     url: string,
     parameters: any[]
-  ): string[] | undefined {
+  ): string[] | undefined => {
     const urlParts = url.split('?');
     if (urlParts.length < 2) {
       return;
@@ -60,9 +60,9 @@ class Background {
     return currentParameters.filter((p) => {
       encodedParameters.every((enc) => p.startsWith(enc));
     });
-  }
+  };
 
-  public processRequest(details: any): void {
+  public processRequest = (details: any): void => {
     const { url, tabId } = details;
     if (url.includes('mime=audio')) {
       return;
@@ -73,46 +73,46 @@ class Background {
       this.tabIds.set(tabId, audioURL);
       chrome.tabs.sendMessage(tabId, { url: audioURL });
     }
-  }
+  };
 
-  public sendMessage(tabId: number): void {
+  public sendMessage = (tabId: number): void => {
     if (this.tabIds.has(tabId)) {
       chrome.tabs.sendMessage(tabId, {
         url: this.tabIds.get(tabId),
       });
     }
-  }
+  };
 
-  public enableExtension(): void {
+  public enableExtension = (): void => {
     chrome.browserAction.setIcon({
       path: {
         19: 'img/icon19.png',
         38: 'img/icon38.png',
       },
     });
-    chrome.tabs.onUpdated.addListener(() => this.sendMessage);
+    chrome.tabs.onUpdated.addListener(this.sendMessage);
     chrome.webRequest.onBeforeRequest.addListener(
-      () => this.processRequest,
+      this.processRequest,
       { urls: ['<all_urls>'] },
       ['blocking']
     );
-  }
+  };
 
-  public disableExtension(): void {
+  public disableExtension = (): void => {
     chrome.browserAction.setIcon({
       path: {
         19: 'img/disabled_icon19.png',
         38: 'img/disabled_icon38.png',
       },
     });
-    chrome.tabs.onUpdated.removeListener(() => this.sendMessage);
-    chrome.webRequest.onBeforeRequest.removeListener(() => this.processRequest);
+    chrome.tabs.onUpdated.removeListener(this.sendMessage);
+    chrome.webRequest.onBeforeRequest.removeListener(this.processRequest);
     this.tabIds.clear();
-  }
+  };
 
-  public saveSettings(disabled: boolean) {
+  public saveSettings = (disabled: boolean): void => {
     chrome.storage.local.set({ audio_only_youtube_disabled: disabled });
-  }
+  };
 }
 
 const background = new Background();
