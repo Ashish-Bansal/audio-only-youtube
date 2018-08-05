@@ -3,7 +3,7 @@ const path = require('path');
 const root = path.resolve(__dirname);
 const argv = require('yargs').argv;
 
-const dir = {
+const paths = {
   package: path.join(root, 'package.json'),
   manifest: path.join(root, 'manifest.json'),
   dist: path.join(root, 'dist'),
@@ -11,14 +11,14 @@ const dir = {
 };
 
 function createManifest(log) {
-  let manifest = JSON.parse(fs.readFileSync(dir.manifest, 'utf8'));
-  let pkg = JSON.parse(fs.readFileSync(dir.package, 'utf8'));
+  let manifest = JSON.parse(fs.readFileSync(paths.manifest, 'utf8'));
+  let pkg = JSON.parse(fs.readFileSync(paths.package, 'utf8'));
 
   manifest.name = pkg.displayName;
   manifest.version = pkg.version;
   manifest.description = pkg.description;
 
-  fs.writeFileSync(dir.distManifest, JSON.stringify(manifest));
+  fs.writeFileSync(paths.distManifest, JSON.stringify(manifest));
   if (log) console.info('manifest: created');
 }
 
@@ -29,13 +29,13 @@ function watchOut(something, callback, log) {
   });
 }
 
-if (!fs.existsSync(dir.dist)){
-  fs.mkdirSync(dir.dist);
+if (!fs.existsSync(paths.dist)){
+  fs.mkpathsSync(paths.dist);
 }
 
 createManifest(true);
 
 if (argv.watch) {
-  watchOut(dir.manifest, createManifest, true);
-  watchOut(dir.package, createManifest, true);
+  watchOut(paths.manifest, createManifest, true);
+  watchOut(paths.package, createManifest, true);
 }
