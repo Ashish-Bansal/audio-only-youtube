@@ -1,33 +1,21 @@
 class Background {
   private tabIds = new Map();
+  private disabled!: boolean;
 
   constructor() {
     chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-      let disabled: boolean = values.audio_only_youtube_disabled;
-      if (typeof disabled === 'undefined') {
-        disabled = false;
-        this.saveSettings(disabled);
+      this.disabled = values.audio_only_youtube_disabled;
+      if (typeof this.disabled === 'undefined') {
+        this.saveSettings(this.disabled);
       }
-
-      if (disabled) {
-        this.disableExtension();
-      } else {
-        this.enableExtension();
-      }
+      this.disabled ? this.disableExtension() : this.enableExtension();
     });
 
     chrome.browserAction.onClicked.addListener(() => {
       chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-        let disabled: boolean = values.audio_only_youtube_disabled;
-
-        if (disabled) {
-          this.enableExtension();
-        } else {
-          this.disableExtension();
-        }
-
-        disabled = !disabled;
-        this.saveSettings(disabled);
+        this.disabled = values.audio_only_youtube_disabled;
+        this.disabled ? this.enableExtension() : this.disableExtension();
+        this.saveSettings(this.disabled);
       });
 
       chrome.tabs.query(
@@ -42,6 +30,34 @@ class Background {
           }
         }
       );
+    });
+
+    chrome.tabs.onSelectionChanged.addListener(() => {
+      chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
+        this.disabled = values.audio_only_youtube_disabled;
+        chrome.storage.sync.get({ autoSaveBandwidth: true }, (item) => {
+          if (item.autoSaveBandwidth) {
+            if (this.disabled) {
+              this.enableExtension();
+              this.saveSettings(this.disabled);
+              chrome.tabs.query(
+                {
+                  active: false,
+                  currentWindow: true,
+                  url: '*://www.youtube.com/*',
+                },
+                (tabs) => {
+                  if (tabs.length > 0) {
+                    chrome.tabs.update(tabs[0].id!, {
+                      url: tabs[0].url,
+                    });
+                  }
+                }
+              );
+            }
+          }
+        });
+      });
     });
   }
 
@@ -94,6 +110,7 @@ class Background {
       { urls: ['<all_urls>'] },
       ['blocking']
     );
+    this.disabled = false;
   };
 
   public disableExtension = (): void => {
@@ -105,6 +122,7 @@ class Background {
     });
     chrome.webRequest.onBeforeRequest.removeListener(this.processRequest);
     this.tabIds.clear();
+    this.disabled = true;
   };
 
   public saveSettings = (disabled: boolean): void => {
