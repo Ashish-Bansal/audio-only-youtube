@@ -30,7 +30,7 @@ function watchOut(something, callback, log) {
 }
 
 if (!fs.existsSync(paths.dist)){
-  fs.mkpathsSync(paths.dist);
+  fs.mkdirSync(paths.dist);
 }
 
 createManifest(true);
