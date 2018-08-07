@@ -8,27 +8,38 @@ function makeSetAudioURL(
     if (pos !== -1) {
       vid = vid.substring(0, pos);
     }
-
     const bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
     videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
     videoElement.style.backgroundSize = '80%';
   }
 
   function setNoBackgroundImageStyle(): void {
-    const gradientTop = document.querySelector('ytp-gradient-top');
-    const gradientBottom = document.querySelector('ytp-gradient-bottom');
+    const gradientTop = document.querySelector('.ytp-gradient-top');
+    const gradientBottom = document.querySelector('.ytp-gradient-bottom');
     const moviePlayer = document.getElementById('movie_player');
+    const rightControls = document.querySelector('.ytp-right-controls');
+    const tooltip = document.querySelector(
+      '.ytp-tooltip.ytp-bottom.ytp-preview'
+    );
+    const mainVideo = document.querySelector(
+      'video.video-stream.html5-main-video'
+    );
+    const chromeBottom = document.querySelector('.ytp-chrome-bottom');
     const playerContanerInner = document.getElementById(
       'player-container-inner'
     );
-    if (gradientTop && gradientBottom) {
+    if (gradientTop && gradientBottom && rightControls && tooltip) {
       gradientTop.remove();
       gradientBottom.remove();
+      rightControls.remove();
+      tooltip.remove();
     }
-    if (moviePlayer) {
+    if (mainVideo && chromeBottom) {
+      mainVideo.removeAttribute('style');
+      chromeBottom.removeAttribute('style');
+    }
+    if (moviePlayer && playerContanerInner) {
       moviePlayer.style.height = null;
-    }
-    if (playerContanerInner) {
       playerContanerInner.style.paddingTop = '6rem';
     }
   }
