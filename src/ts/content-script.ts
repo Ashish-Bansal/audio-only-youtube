@@ -40,11 +40,7 @@ function makeSetAudioURL(
       videoElement.currentTime = 0;
       videoElement.play();
       chrome.storage.sync.get({ showThumbnail: true }, (item) => {
-        if (item.showThumbnail) {
-          setBackgroundImage();
-        } else {
-          setNoBackgroundImageStyle();
-        }
+        item.showThumbnail ? setBackgroundImage() : setNoBackgroundImageStyle();
       });
     }
   }
