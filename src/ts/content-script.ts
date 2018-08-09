@@ -14,6 +14,11 @@ function makeSetAudioURL(
   }
 
   function setNoBackgroundImageStyle(): void {
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML =
+      '.ytp-autohide .ytp-chrome-bottom{opacity:1!important;width:100%!important;left:0!important;display:block!important}.ytp-autohide .ytp-chrome-bottom .ytp-progress-bar-container{bottom:-1px!important}.ytp-autohide .ytp-chrome-bottom .ytp-chrome-controls{opacity:0!important}';
+
     const gradientTop = document.querySelector('.ytp-gradient-top');
     const gradientBottom = document.querySelector('.ytp-gradient-bottom');
     const moviePlayer = document.getElementById('movie_player');
@@ -42,6 +47,32 @@ function makeSetAudioURL(
       moviePlayer.style.height = null;
       playerContanerInner.style.paddingTop = '6rem';
     }
+    document.getElementsByTagName('head')[0].appendChild(style);
+    const findVideoInterval = setInterval(() => {
+      const ytplayer = document.querySelector(
+        '.html5-video-player:not(.addedupdateevents)'
+      );
+      if (!ytplayer) {
+        return;
+      }
+      clearInterval(findVideoInterval);
+      ytplayer.className += ' addedupdateevents';
+      const video = ytplayer.querySelector('video');
+      const progressbar = ytplayer.querySelector('.ytp-play-progress');
+      const loadbar = ytplayer.querySelector('.ytp-load-progress');
+      if (!video || !progressbar || !loadbar) {
+        return;
+      }
+      video.addEventListener('timeupdate', () => {
+        progressbar.style.transform = `scaleX(${video.currentTime /
+          video.duration})`;
+      });
+      video.addEventListener('progress', () => {
+        loadbar.style.transform = `scaleX(${video.buffered.end(
+          video.buffered.length - 1
+        ) / video.duration})`;
+      });
+    }, 500);
   }
 
   function setAudioURL(): void {
