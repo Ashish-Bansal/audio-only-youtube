@@ -16,7 +16,7 @@
   "permissions": [
     "tabs",
     "webRequest",
-    "*://*/*",
+    "*://youtube.com/*", "*://*.youtube.com/*", "*://youtu.be/*", "*://*.youtu.be/*", "*://youtube-nocookie.com/*", "*://*.youtube-nocookie.com/*", "*://*.googlevideo.com/*", "*://*.ytimg.com/*",  "*://*.ytimg.com/*" 
     "webRequestBlocking",
     "storage"
   ],
