@@ -6,7 +6,17 @@ function makeSetAudioURL(videoElement, url) {
       vid = vid.substring(0, pos);
     }
 
-    var bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
+    var maxresthumb = new Image();
+    maxresthumb.url = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+    
+    var bgUrl;
+    if (maxresthumb.width = 120) {
+      bgUrl = `https://img.youtube.com/vi/${vid}/sddefault.jpg`;
+    }
+    else {
+      bgUrl = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`
+    }
+    
     videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
     videoElement.style.backgroundSize = '80%';
   }
