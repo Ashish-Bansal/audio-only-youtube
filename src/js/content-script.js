@@ -6,7 +6,7 @@ function makeSetAudioURL(videoElement, url) {
       vid = vid.substring(0, pos);
     }
 
-    var bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
+    var bgUrl = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
     videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
     videoElement.style.backgroundSize = '80%';
   }
