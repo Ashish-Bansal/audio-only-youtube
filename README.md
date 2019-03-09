@@ -7,13 +7,17 @@ audio-only-youtube chrome extension enables you to disable only video on youtube
 
 Note: It doesn't support Youtube live videos.
 
-#### Installation
+## Installation
 
 [You can install extension from here(Chrome Webstore)](https://chrome.google.com/webstore/detail/audio-only-youtube/pkocpiliahoaohbolmkelakpiphnllog)
 
-**Thanks to Stefan Ivic for all the icons used in the extension.**
+## FAQ
 
-#### Contribute
+#### Why does it need access to all the websites ?
+This was done so that it can work in the websites which have embedded youtube videos. That's why we hook it up for all the websites. https://github.com/Ashish-Bansal/audio-only-youtube/issues/2
+
+
+## Contribute
 
 1. After cloning the repo,  run `yarn run start`.
 2. Open chrome, go to extensions tab, load unpacked extension and select
@@ -23,7 +27,9 @@ Note: It doesn't support Youtube live videos.
 In case you edit code, it would automatically rebuild the extension and after
 that you need to reload it in the browser.
 
-#### Extension Internals
+**Thanks to Stefan Ivic for all the icons used in the extension.**
+
+## Extension Internals
 
 The only reason this extension is able to work is because Youtube serves audio and video streams separately. This extension intercepts response of all the requests on the youtube domains. In the response headers, it checks for Content-Type. If it's an audio file, then it assumes that we have got the audio stream for the video being played. It removes certain range related query parameters in accordance with HTTP RFC's range requests section. Then we set the source of Youtube's video player to audio stream.
 
