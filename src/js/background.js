@@ -64,11 +64,18 @@ class Background {
   processRequest = (details) => {
     const { url, tabId } = details;
     if (!url.includes('mime=audio')) return;
+
+    if (url.includes('live=1')) {
+      this.tabIds.set(tabId, '');
+      this.sendMessage(tabId);
+      return;
+    }
+
     const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
     const audioURL = this.removeURLParameters(url, parametersToBeRemoved);
     if (audioURL && this.tabIds.get(tabId) !== audioURL) {
       this.tabIds.set(tabId, audioURL);
-      chrome.tabs.sendMessage(tabId, { url: audioURL });
+      this.sendMessage(tabId);
     }
   };
 
