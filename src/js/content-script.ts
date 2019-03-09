@@ -1,6 +1,27 @@
 let originalVideoElementStyle: any = null;
 
-function setBackgroundImage(videoElement: HTMLVideoElement) {
+async function asyncFind(arr: Array<any>, callback: Function) {
+  for (const element of arr) {
+    const result = await callback(element);
+    if (result) {
+      return element;
+    }
+  }
+  return null;
+}
+
+async function checkImageLoaded(imageElement: HTMLImageElement) {
+  return new Promise(resolve => {
+    const intervalId = setInterval(() => {
+      if (imageElement.complete) {
+        clearInterval(intervalId);
+        resolve();
+      }
+    }, 400);
+  });
+}
+
+async function setBackgroundImage(videoElement: HTMLVideoElement) {
   if (!originalVideoElementStyle) {
     originalVideoElementStyle = {
       background: videoElement.style.background,
@@ -16,9 +37,25 @@ function setBackgroundImage(videoElement: HTMLVideoElement) {
     vid = vid.substring(0, pos);
   }
 
-  const bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
+  // https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
+  const videoImageUrls = [
+    `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${vid}/sddefault.jpg`,
+    `https://img.youtube.com/vi/${vid}/hqdefault.jpg`,
+    `https://img.youtube.com/vi/${vid}/mqdefault.jpg`,
+    `https://img.youtube.com/vi/${vid}/0.jpg`,
+  ];
+
+  const bgUrl = await asyncFind(videoImageUrls, async (url: string) => {
+    const imageElement = new Image();
+    imageElement.src = url;
+    await checkImageLoaded(imageElement);
+
+    // Placeholder image has width of 120px.
+    return imageElement.width !== 120;
+  });
+
   videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
-  videoElement.style.backgroundSize = '80%';
 }
 
 function showAudioOnlyInformation(videoElement: HTMLVideoElement) {
@@ -49,7 +86,6 @@ function removeBackgroundImage(videoElement: HTMLVideoElement) {
   }
 
   videoElement.style.background = originalVideoElementStyle.background;
-  videoElement.style.backgroundSize = originalVideoElementStyle.backgroundSize;
 }
 
 function removeAudioOnlyInformation() {
