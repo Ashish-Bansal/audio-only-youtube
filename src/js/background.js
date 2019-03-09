@@ -34,7 +34,7 @@ class Background {
         {
           active: true,
           currentWindow: true,
-          url: '*://www.youtube.com/*',
+          url: '*://*.youtube.com/*',
         },
         (tabs) => {
           if (tabs.length > 0) {
