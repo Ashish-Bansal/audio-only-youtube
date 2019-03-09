@@ -1,6 +1,7 @@
+const showThumbnail: any = document.getElementById('show-thumbnail');
+
 // Saves options to chrome.storage
 function saveOptions() {
-  var showThumbnail = document.getElementById('show-thumbnail');
   chrome.storage.sync.set({
     showThumbnail: showThumbnail.checked,
   });
@@ -14,11 +15,10 @@ function restoreOptions() {
       showThumbnail: true,
     },
     function(items) {
-      document.getElementById('show-thumbnail').checked = items.showThumbnail;
+      showThumbnail.checked = items.showThumbnail;
     }
   );
 }
+
 document.addEventListener('DOMContentLoaded', restoreOptions);
-document
-  .getElementById('show-thumbnail')
-  .addEventListener('change', saveOptions);
+showThumbnail.addEventListener('change', saveOptions);

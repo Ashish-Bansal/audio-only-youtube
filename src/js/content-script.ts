@@ -1,15 +1,15 @@
-var originalVideoElementStyle = null;
+let originalVideoElementStyle: any = null;
 
-function setBackgroundImage(videoElement) {
-  var vid = window.location.search.split('v=')[1];
+function setBackgroundImage(videoElement: HTMLVideoElement) {
+  let vid = window.location.search.split('v=')[1];
   if (!vid) return;
 
-  var pos = vid.indexOf('&');
+  const pos = vid.indexOf('&');
   if (pos !== -1) {
     vid = vid.substring(0, pos);
   }
 
-  var bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
+  const bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
   videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
   videoElement.style.backgroundSize = '80%';
 
@@ -21,24 +21,29 @@ function setBackgroundImage(videoElement) {
   }
 }
 
-function showAudioOnlyInformation(videoElement) {
+function showAudioOnlyInformation(videoElement: HTMLVideoElement) {
   if (document.getElementsByClassName('audio_only_div').length === 0) {
-    var extensionAlert = document.createElement('div');
+    const extensionAlert = document.createElement('div');
     extensionAlert.className = 'audio_only_div';
 
-    var alertText = document.createElement('p');
+    const alertText = document.createElement('p');
     alertText.className = 'alert_text';
     alertText.innerHTML =
       'Audio Only. To watch video, ' +
       'click on the extension icon above and refresh your page.';
 
     extensionAlert.appendChild(alertText);
-    var parent = videoElement.parentNode.parentNode;
-    parent.appendChild(extensionAlert);
+    const videoParent = videoElement.parentNode;
+    if (!videoParent) return;
+
+    const parent = videoParent.parentNode;
+    if (parent) {
+      parent.appendChild(extensionAlert);
+    }
   }
 }
 
-function removeBackgroundImage(videoElement) {
+function removeBackgroundImage(videoElement: HTMLVideoElement) {
   if (!originalVideoElementStyle) {
     return;
   }
@@ -48,19 +53,19 @@ function removeBackgroundImage(videoElement) {
 }
 
 function removeAudioOnlyInformation() {
-  var elements = document.getElementsByClassName('audio_only_div');
+  const elements = document.getElementsByClassName('audio_only_div');
   if (!elements.length) return;
   Array.from(elements).forEach(function(element) {
     element.remove();
   });
 }
 
-function removeVideoPlayerStyling(videoElement) {
+function removeVideoPlayerStyling(videoElement: HTMLVideoElement) {
   removeBackgroundImage(videoElement);
-  removeAudioOnlyInformation(videoElement);
+  removeAudioOnlyInformation();
 }
 
-function applyVideoPlayerStyling(videoElement) {
+function applyVideoPlayerStyling(videoElement: HTMLVideoElement) {
   chrome.storage.sync.get({ showThumbnail: true }, function(item) {
     if (item.showThumbnail) {
       setBackgroundImage(videoElement);
@@ -70,7 +75,7 @@ function applyVideoPlayerStyling(videoElement) {
   showAudioOnlyInformation(videoElement);
 }
 
-function makeSetAudioURL(videoElement, url) {
+function makeSetAudioURL(videoElement: HTMLVideoElement, url: string) {
   function setAudioURL() {
     if (url === '' || videoElement.src === url) {
       return;
@@ -84,10 +89,10 @@ function makeSetAudioURL(videoElement, url) {
   return setAudioURL;
 }
 
-chrome.runtime.onMessage.addListener(function(request) {
-  var url = request.url;
-  var videoElements = window.document.getElementsByTagName('video');
-  var videoElement = videoElements[0];
+chrome.runtime.onMessage.addListener((request) => {
+  const url = request.url;
+  const videoElements = window.document.getElementsByTagName('video');
+  const videoElement = videoElements[0];
   if (typeof videoElement == 'undefined') {
     console.log('Audio Only Youtube - Video element undefined in this frame!');
     return;

@@ -10,13 +10,20 @@ module.exports = {
     filename: './js/[name].js'
   },
   resolve: {
-    modules: [path.join(__dirname, 'src'), 'node_modules']
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
+    extensions: [".js", '.ts'],
   },
   module: {
     rules: [{
       test: /\.js$/,
       loaders: ['babel-loader'],
       include: path.resolve(__dirname, '../src/js')
+    }, {
+      test: /\.tsx?$/,
+      use: [
+        'ts-loader',
+      ],
+      exclude: /node_modules/
     }]
   }
 };
