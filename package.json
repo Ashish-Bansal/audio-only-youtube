@@ -13,24 +13,25 @@
     "prettier": "prettier 'src/**/*.@(js|json)' --write"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^4.5.2",
+    "copy-webpack-plugin": "^5.0.0",
     "crx": "^4.0.1",
-    "webpack": "^4.16.0",
+    "webpack": "^4.29.6",
     "webpack-version-file-plugin": "^0.3.3"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "prettier": "^1.13.7",
-    "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack-cli": "^3.0.8"
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-proposal-function-bind": "^7.2.0",
+    "@babel/preset-env": "^7.3.4",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "prettier": "^1.16.4",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack-cli": "^3.2.3"
   }
 }
