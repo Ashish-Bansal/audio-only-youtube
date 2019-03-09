@@ -1,6 +1,13 @@
 let originalVideoElementStyle: any = null;
 
 function setBackgroundImage(videoElement: HTMLVideoElement) {
+  if (!originalVideoElementStyle) {
+    originalVideoElementStyle = {
+      background: videoElement.style.background,
+      backgroundSize: videoElement.style.backgroundSize,
+    }
+  }
+
   let vid = window.location.search.split('v=')[1];
   if (!vid) return;
 
@@ -12,13 +19,6 @@ function setBackgroundImage(videoElement: HTMLVideoElement) {
   const bgUrl = `https://img.youtube.com/vi/${vid}/0.jpg`;
   videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
   videoElement.style.backgroundSize = '80%';
-
-  if (!originalVideoElementStyle) {
-    originalVideoElementStyle = {
-      background: videoElement.style.background,
-      backgroundSize: videoElement.style.backgroundSize,
-    }
-  }
 }
 
 function showAudioOnlyInformation(videoElement: HTMLVideoElement) {
