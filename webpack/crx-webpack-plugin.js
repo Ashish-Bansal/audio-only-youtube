@@ -51,8 +51,8 @@ CrxPlugin.prototype.package = function() {
       mkdirp(self.outputPath, function(err) {
         if (err) throw(err)
         var updateXML = self.crx.generateUpdateXML();
-        fs.writeFile(self.updateFile, updateXML);
-        fs.writeFile(self.crxFile, buffer);
+        fs.writeFileSync(self.updateFile, updateXML);
+        fs.writeFileSync(self.crxFile, buffer);
       });
     });
   });

@@ -3,9 +3,9 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const VersionFilePlugin = require('webpack-version-file-plugin');
-const CrxPlugin = require('crx-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const CrxPlugin = require('./crx-webpack-plugin');
 const config = require('./config.js');
 const pkg = require('../package.json');
 
