@@ -38,15 +38,5 @@ module.exports = _.merge({}, config, {
       name: appName
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
-    new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-      uglifyOptions: {
-        output: {
-          comments: false,
-        },
-      },
-      sourceMap: false,
-    }),
   ]
 });
