@@ -55,7 +55,7 @@ async function setBackgroundImage(videoElement: HTMLVideoElement) {
     return imageElement.width !== 120;
   });
 
-  videoElement.style.background = `transparent url(${bgUrl}) no-repeat center`;
+  videoElement.style.background = `transparent url(${bgUrl}) no-repeat center / cover`;
 }
 
 function showAudioOnlyInformation(videoElement: HTMLVideoElement) {
