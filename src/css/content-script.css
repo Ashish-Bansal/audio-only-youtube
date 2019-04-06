@@ -1,12 +1,12 @@
 .audio_only_div {
   z-index: 10;
-  color: #ff9494;
+  color: #FFF;
   cursor: pointer;
   position: relative;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  text-shadow: #00000080 0 0 2px;
   pointer-events: none;
-  opacity: 0.5;
 }
 
 #movie_player:active .audio_only_div {
