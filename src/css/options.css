@@ -1,5 +1,5 @@
 /* The switch - the box around the slider */
-.show-thumbnail-switch {
+.switch {
   position: relative;
   display: inline-block;
   width: 45px;
@@ -7,12 +7,12 @@
 }
 
 /* Hide default HTML checkbox */
-.show-thumbnail-switch input {
+.switch input {
   display: none;
 }
 
 /* The slider */
-.show-thumbnail-slider {
+.slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -24,7 +24,7 @@
   transition: 0.4s;
 }
 
-.show-thumbnail-slider:before {
+.slider:before {
   position: absolute;
   content: '';
   height: 20px;
@@ -36,26 +36,26 @@
   transition: 0.4s;
 }
 
-input:checked + .show-thumbnail-slider {
+input:checked + .slider {
   background-color: #2196f3;
 }
 
-input:focus + .show-thumbnail-slider {
+input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + .show-thumbnail-slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
 }
 
 /* Rounded sliders */
-.show-thumbnail-slider--round {
+.slider--round {
   border-radius: 34px;
 }
 
-.show-thumbnail-slider--round:before {
+.slider--round:before {
   border-radius: 50%;
 }
 
@@ -70,13 +70,13 @@ input:checked + .show-thumbnail-slider:before {
   text-align: center;
   padding-top: 10px;
 }
-.show-thumbnail-switch-container {
+.switch-container {
   width: 250px;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   display: flex;
   justify-content: space-between;
 }
-.show-thumbnail-switch-container > div {
+.switch-container > div {
   height: 24px;
   line-height: 24px;
 }
