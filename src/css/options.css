@@ -71,7 +71,7 @@ input:checked + .slider:before {
   padding-top: 10px;
 }
 .switch-container {
-  width: 250px;
+  width: 300px;
   margin: 0 auto 10px auto;
   display: flex;
   justify-content: space-between;

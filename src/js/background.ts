@@ -33,18 +33,7 @@ class Background {
         this.saveSettings(this.disabled);
       });
 
-      chrome.tabs.query(
-        {
-          active: true,
-          currentWindow: true,
-          url: '*://*.youtube.com/*',
-        },
-        (tabs) => {
-          if (tabs.length > 0) {
-            chrome.tabs.update(tabs[0].id!, { url: tabs[0].url });
-          }
-        }
-      );
+      this.refreshYoutubeTab(true);
     });
 
     chrome.tabs.onSelectionChanged.addListener(() => {
@@ -57,20 +46,20 @@ class Background {
               this.enableExtension();
               this.disabled = false;
               this.saveSettings(this.disabled);
-              
-              chrome.tabs.query({
-                active: false,
-                currentWindow: true,
-                url: '*://*.youtube.com/*',
-              }, (tabs) => {
-                if (tabs.length > 0) {
-                  chrome.tabs.update(tabs[0].id!, {url: tabs[0].url});
-                }  
-              });
+              this.refreshYoutubeTab(false);
             }
           });
         }
       });
+    });
+
+    chrome.runtime.onMessage.addListener((msg, sender) => {
+      if ("enable_extension" === msg.action) {
+        this.enableExtension();
+        this.disabled = false;
+        this.saveSettings(this.disabled);
+        this.refreshYoutubeTab(true);
+      }
     });
   }
 
@@ -110,6 +99,7 @@ class Background {
   sendMessage = (tabId: number) => {
     if (this.tabIds.has(tabId)) {
       chrome.tabs.sendMessage(tabId, {
+        action:"apply_styling",
         url: this.tabIds.get(tabId),
       });
     }
@@ -129,6 +119,18 @@ class Background {
       ['blocking']
     );
   };
+
+  refreshYoutubeTab(active:boolean) {
+    chrome.tabs.query({
+      active: active,
+      currentWindow: true,
+      url: '*://*.youtube.com/*',
+    }, (tabs) => {
+      if (tabs.length > 0) {
+        chrome.tabs.update(tabs[0].id!, {url: tabs[0].url});
+      }  
+    });
+  }
 
   disableExtension = () => {
     chrome.browserAction.setIcon({

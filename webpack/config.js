@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   entry: {
     'content-script': './src/js/content-script',
+    'content-popup-music': './src/js/content-popup-music',
     background: './src/js/background',
     options: './src/js/options'
   },

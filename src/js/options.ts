@@ -1,11 +1,13 @@
 const showThumbnail: any = document.getElementById('show-thumbnail');
 const autoEnableOnExit: any = document.getElementById('auto-enable-on-exit');
+const promptIfMusic: any = document.getElementById('prompt-if-music');
 
 // Saves options to chrome.storage
 function saveOptions() {
   chrome.storage.sync.set({
     showThumbnail: showThumbnail.checked,
-    autoEnableOnExit: autoEnableOnExit.checked
+    autoEnableOnExit: autoEnableOnExit.checked,
+    promptIfMusic: promptIfMusic.checked
   });
 }
 
@@ -16,10 +18,12 @@ function restoreOptions() {
     {
       showThumbnail: true,
       autoEnableOnExit: false,
+      promptIfMusic: false
     },
     function(items) {
       showThumbnail.checked = items.showThumbnail;
       autoEnableOnExit.checked = items.autoEnableOnExit;
+      promptIfMusic.checked = items.promptIfMusic;
     }
   );
 }
@@ -27,3 +31,4 @@ function restoreOptions() {
 document.addEventListener('DOMContentLoaded', restoreOptions);
 showThumbnail.addEventListener('change', saveOptions);
 autoEnableOnExit.addEventListener('change', saveOptions);
+promptIfMusic.addEventListener('change', saveOptions);

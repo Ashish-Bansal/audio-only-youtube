@@ -126,23 +126,25 @@ function makeSetAudioURL(videoElement: HTMLVideoElement, url: string) {
 }
 
 chrome.runtime.onMessage.addListener((request) => {
-  const url = request.url;
-  const videoElements = window.document.getElementsByTagName('video');
-  const videoElement = videoElements[0];
-  if (typeof videoElement == 'undefined') {
-    console.log('Audio Only Youtube - Video element undefined in this frame!');
-    return;
-  }
-  const videoRect = videoElement.getBoundingClientRect();
-  if (videoRect.width === 0 && videoRect.height === 0) {
-    console.log('Audio Only Youtube - Video element not visible!');
-    return;
-  }
+  if ("apply_styling" === request.action) {
+    const url = request.url;
+    const videoElements = window.document.getElementsByTagName('video');
+    const videoElement = videoElements[0];
+    if (typeof videoElement == 'undefined') {
+      console.log('Audio Only Youtube - Video element undefined in this frame!');
+      return;
+    }
+    const videoRect = videoElement.getBoundingClientRect();
+    if (videoRect.width === 0 && videoRect.height === 0) {
+      console.log('Audio Only Youtube - Video element not visible!');
+      return;
+    }
 
-  videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
-  if (url) {
-    applyVideoPlayerStyling(videoElement);
-  } else {
-    removeVideoPlayerStyling(videoElement);
+    videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
+    if (url) {
+      applyVideoPlayerStyling(videoElement);
+    } else {
+      removeVideoPlayerStyling(videoElement);
+    }
   }
 });

@@ -30,6 +30,11 @@
       "css": ["css/content-script.css"],
       "run_at": "document_start",
       "all_frames": true
+    },
+    {
+    "matches": ["*://www.youtube.com/*"],
+    "run_at": "document_idle",
+    "js": ["js/content-popup-music.js"]
     }
   ],
   "options_page": "html/options.html"
