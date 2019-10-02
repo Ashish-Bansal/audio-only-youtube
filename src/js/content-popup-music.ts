@@ -1,8 +1,8 @@
 
 let currentPopup: HTMLElement|null;
-function showPopupIfMusic() {
+function showPopupIfNeeded(enabled: boolean) {
   isMusic(function(res: boolean) {
-    if (!res)
+    if (res == enabled)
       return;
     if (currentPopup)
       currentPopup.remove();
@@ -18,7 +18,7 @@ function showPopupIfMusic() {
     popup.style.border = "solid 1px gray";
     popup.style.textAlign = "center";
     var popupMsg = document.createElement("div")
-    popupMsg.innerHTML = "Enable Audio Only?";
+    popupMsg.innerHTML = enabled ? "Disable Audio Only?":"Enable Audio Only?";
     popupMsg.style.marginBottom = "10px";
     popup.appendChild(popupMsg);
     var popupButtons = document.createElement("div");
@@ -51,7 +51,8 @@ function showPopupIfMusic() {
     popupYes.onclick = function() {
       popup.remove();
       chrome.runtime.sendMessage({
-        action: 'enable_extension'
+        action: 'toggle_extension',
+        enable: !enabled
       });
     };
     popupNo.onclick = function() {
@@ -120,11 +121,11 @@ function isVideoUrl() {
 }
 
 function showPopupIfShould() {
-  chrome.storage.sync.get({ promptIfMusic: false }, function(item) {
-    if (item.promptIfMusic) {
+  chrome.storage.sync.get({ promptIfMusic: false, promptIfNotMusic: false }, function(item) {
+    if (item.promptIfMusic || item.promptIfNotMusic) {
       chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-        if (values.audio_only_youtube_disabled)
-          showPopupIfMusic();
+        if (values.audio_only_youtube_disabled ? item.promptIfMusic:item.promptIfNotMusic)
+          showPopupIfNeeded(!values.audio_only_youtube_disabled);
       });
     }
   });

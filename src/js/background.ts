@@ -54,9 +54,12 @@ class Background {
     });
 
     chrome.runtime.onMessage.addListener((msg, sender) => {
-      if ("enable_extension" === msg.action) {
-        this.enableExtension();
-        this.disabled = false;
+      if ("toggle_extension" === msg.action) {
+        if (msg.enable)
+          this.enableExtension();
+        else
+          this.disableExtension();
+        this.disabled = !msg.enable;
         this.saveSettings(this.disabled);
         this.refreshYoutubeTab(true);
       }
