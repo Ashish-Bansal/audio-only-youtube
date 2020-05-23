@@ -1,8 +1,8 @@
 {
-  "name": "<%= package.displayName %>",
-  "version": "<%= package.version %>",
+  "name": "$DISPLAY_NAME",
+  "version": "$VERSION",
   "manifest_version": 2,
-  "description": "<%= package.description %>",
+  "description": "$DESCRIPTION",
   "offline_enabled": true,
   "icons": {
     "19": "img/icon19.png",

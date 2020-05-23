@@ -14,9 +14,8 @@
   },
   "dependencies": {
     "copy-webpack-plugin": "^5.0.0",
-    "crx": "^4.0.1",
     "webpack": "^4.29.6",
-    "webpack-version-file-plugin": "^0.3.3"
+    "zip-webpack-plugin": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -35,7 +34,6 @@
     "prettier": "^1.16.4",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
-    "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack-cli": "^3.2.3"
   }
 }
