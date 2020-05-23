@@ -4,7 +4,7 @@
   "version": "0.8.0",
   "description": "Enables you to disable video streams on youtube and listen audio",
   "engines": {
-    "node": "10.6.0"
+    "node": "10.18.0"
   },
   "scripts": {
     "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
