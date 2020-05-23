@@ -13,13 +13,7 @@
   "background": {
     "scripts": ["js/background.js"]
   },
-  "permissions": [
-    "tabs",
-    "webRequest",
-    "*://*/*",
-    "webRequestBlocking",
-    "storage"
-  ],
+  "permissions": ["tabs", "webRequest", "storage", "*://*/*"],
   "browser_action": {
     "default_title": "Audio Only Youtube"
   },

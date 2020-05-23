@@ -99,7 +99,6 @@ class Background {
     chrome.webRequest.onBeforeRequest.addListener(
       this.processRequest,
       { urls: ['<all_urls>'] },
-      ['blocking']
     );
   };
 
