@@ -11,12 +11,6 @@ Note: It doesn't support Youtube live videos.
 
 [You can install extension from here(Chrome Webstore)](https://chrome.google.com/webstore/detail/audio-only-youtube/pkocpiliahoaohbolmkelakpiphnllog)
 
-## FAQ
-
-#### Why does it need access to all the websites ?
-This was done so that it can work in the websites which have embedded youtube videos. That's why we hook it up for all the websites. https://github.com/Ashish-Bansal/audio-only-youtube/issues/2
-
-
 ## Contribute
 
 1. After cloning the repo,  run `yarn run start`.
