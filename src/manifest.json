@@ -16,6 +16,7 @@
   "permissions": [
     "tabs", "webRequest", "storage",
     "*://www.youtube.com/*",
+    "*://music.youtube.com/*",
     "*://*.googlevideo.com/*"
   ],
   "browser_action": {
@@ -24,6 +25,13 @@
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
+      "js": ["js/content-script.js"],
+      "css": ["css/content-script.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://music.youtube.com/*"],
       "js": ["js/content-script.js"],
       "css": ["css/content-script.css"],
       "run_at": "document_start",
