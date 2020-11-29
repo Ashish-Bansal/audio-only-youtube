@@ -1,17 +1,18 @@
 class Background {
   private tabIds = new Map();
+  private disabled? : boolean;
 
   constructor() {
     this.tabIds = new Map();
 
     chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-      let disabled = values.audio_only_youtube_disabled;
-      if (typeof disabled === 'undefined') {
-        disabled = false;
-        this.saveSettings(disabled);
+      this.disabled = values.audio_only_youtube_disabled;
+      if (typeof this.disabled === 'undefined') {
+        this.disabled = false;
+        this.saveSettings(this.disabled);
       }
 
-      if (disabled) {
+      if (this.disabled) {
         this.disableExtension();
       } else {
         this.enableExtension();
@@ -20,16 +21,16 @@ class Background {
 
     chrome.browserAction.onClicked.addListener(() => {
       chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
-        let disabled = values.audio_only_youtube_disabled;
+        this.disabled = values.audio_only_youtube_disabled;
 
-        if (disabled) {
+        if (this.disabled) {
           this.enableExtension();
         } else {
           this.disableExtension();
         }
 
-        disabled = !disabled;
-        this.saveSettings(disabled);
+        this.disabled = !this.disabled;
+        this.saveSettings(this.disabled);
       });
 
       chrome.tabs.query(
@@ -44,6 +45,32 @@ class Background {
           }
         }
       );
+    });
+
+    chrome.tabs.onSelectionChanged.addListener(() => {
+      chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
+        this.disabled = values.audio_only_youtube_disabled;
+    
+        if (this.disabled) {
+          chrome.storage.sync.get({ autoEnableOnExit: true }, (item) => {
+            if (item.autoEnableOnExit) {
+              this.enableExtension();
+              this.disabled = false;
+              this.saveSettings(this.disabled);
+              
+              chrome.tabs.query({
+                active: false,
+                currentWindow: true,
+                url: '*://*.youtube.com/*',
+              }, (tabs) => {
+                if (tabs.length > 0) {
+                  chrome.tabs.update(tabs[0].id!, {url: tabs[0].url});
+                }  
+              });
+            }
+          });
+        }
+      });
     });
   }
 
