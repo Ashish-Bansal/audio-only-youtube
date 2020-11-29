@@ -17,6 +17,7 @@
     "tabs",
     "webRequest",
     "storage",
+	 "webRequestBlocking",
     "*://www.youtube.com/*",
     "*://music.youtube.com/*",
     "*://*.googlevideo.com/*"

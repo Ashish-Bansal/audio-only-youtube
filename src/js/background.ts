@@ -64,7 +64,13 @@ class Background {
 
   processRequest = (details: any) => {
     const { url, tabId } = details;
-    if (!url.includes('mime=audio')) return;
+    if (!tabsStatus.has(tabId))
+      tabsStatus.set(tabId, new BlockedParts())
+
+    const tabStatus: BlockedParts = tabsStatus.get(tabId) as BlockedParts
+
+    if (!(url.includes('mime=audio') || url.includes('mime=video'))) return;
+
 
     if (url.includes('live=1')) {
       this.tabIds.set(tabId, '');
@@ -72,12 +78,32 @@ class Background {
       return;
     }
 
-    const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
-    const audioURL = this.removeURLParameters(url, parametersToBeRemoved);
-    if (audioURL && this.tabIds.get(tabId) !== audioURL) {
-      this.tabIds.set(tabId, audioURL);
-      this.sendMessage(tabId);
+    if (url.includes('mime=video')) {
+      if (tabStatus.video) {
+        return {
+          cancel: true
+        }
+      }
+      else 
+        tabStatus.video = true
     }
+    else if (url.includes('mime=audio')) {
+      if (tabStatus.audio && url.includes('range=')) {
+        return {
+          cancel: true
+        }
+      }
+      else if (url.includes('range=')) {
+        const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
+        const audioURL = this.removeURLParameters(url, parametersToBeRemoved);
+        if (audioURL && this.tabIds.get(tabId) !== audioURL) {
+          this.tabIds.set(tabId, audioURL);
+          this.sendMessage(tabId);
+          tabStatus.audio = true
+        }
+      }
+    }
+
   };
 
   sendMessage = (tabId: number) => {
@@ -99,6 +125,7 @@ class Background {
     chrome.webRequest.onBeforeRequest.addListener(
       this.processRequest,
       { urls: ['<all_urls>'] },
+		[ 'blocking' ]
     );
   };
 
@@ -120,3 +147,13 @@ class Background {
 }
 
 const background = new Background();
+
+// Reset refreshed tab's status
+chrome.tabs.onUpdated.addListener( tabId => tabsStatus.delete(tabId) )
+
+class BlockedParts {
+  public audio: boolean = false
+  public video: boolean = false
+}
+
+let tabsStatus = new Map<number, BlockedParts>()
