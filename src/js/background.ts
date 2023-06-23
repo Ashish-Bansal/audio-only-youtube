@@ -72,7 +72,7 @@ class Background {
       return;
     }
 
-    const parametersToBeRemoved = ['range', 'rn', 'rbuf'];
+    const parametersToBeRemoved = ['range', 'rn', 'rbuf', 'ump'];
     const audioURL = this.removeURLParameters(url, parametersToBeRemoved);
     if (audioURL && this.tabIds.get(tabId) !== audioURL) {
       this.tabIds.set(tabId, audioURL);
