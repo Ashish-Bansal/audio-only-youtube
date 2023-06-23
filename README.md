@@ -15,7 +15,7 @@ Note: It doesn't support Youtube live videos.
 
 1. After cloning the repo,  run `yarn run start`.
 2. Open chrome, go to extensions tab, load unpacked extension and select
-   `dev/build` directory.
+   `build/dev` directory.
 3. Go to Youtube and see extension in live.
 
 In case you edit code, it would automatically rebuild the extension and after
