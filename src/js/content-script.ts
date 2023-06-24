@@ -15,7 +15,7 @@ async function checkImageLoaded(imageElement: HTMLImageElement) {
     const intervalId = setInterval(() => {
       if (imageElement.complete) {
         clearInterval(intervalId);
-        resolve();
+        resolve(null);
       }
     }, 400);
   });

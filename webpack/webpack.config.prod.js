@@ -15,18 +15,24 @@ module.exports = _.merge({}, config, {
     path: path.resolve(__dirname, '../build/prod'),
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: './src' }], {
-      ignore: ['js/**/*', 'manifest.json'],
-      copyUnmodified: true,
-    }),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin(
       {
-        from: './src/manifest.json',
-        transform(content) {
-          return fillUpManifest(content);
-        },
-      },
-    ]),
+        patterns: [
+          {
+            from: './src',
+            globOptions: {
+              ignore: ['js/**/*', 'manifest.json'],
+            },
+            transform(content, filepath) {
+              if (filepath.indexOf("manifest.json") > -1) {
+                return fillUpManifest(content);
+              }
+              return content;
+            }
+          },
+        ],
+      }
+    ),
     new ZipPlugin({
       filename: appName,
     }),

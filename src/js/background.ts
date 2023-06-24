@@ -18,7 +18,7 @@ class Background {
       }
     });
 
-    chrome.browserAction.onClicked.addListener(() => {
+    chrome.action.onClicked.addListener(() => {
       chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
         let disabled = values.audio_only_youtube_disabled;
 
@@ -89,10 +89,10 @@ class Background {
   };
 
   enableExtension = () => {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        19: 'img/icon19.png',
-        38: 'img/icon38.png',
+        "19": "../img/icon19.png",
+        "38": "../img/icon38.png",
       },
     });
     chrome.tabs.onUpdated.addListener(this.sendMessage);
@@ -103,10 +103,10 @@ class Background {
   };
 
   disableExtension = () => {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        19: 'img/disabled_icon19.png',
-        38: 'img/disabled_icon38.png',
+        "19": "../img/disabled_icon19.png",
+        "38": "../img/disabled_icon38.png",
       },
     });
     chrome.tabs.onUpdated.removeListener(this.sendMessage);

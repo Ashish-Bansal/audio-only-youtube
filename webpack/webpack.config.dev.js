@@ -11,18 +11,30 @@ module.exports = _.merge({}, config, {
   },
   devtool: 'source-map',
   plugins: [
-    new CopyWebpackPlugin([{ from: './src' }], {
-      ignore: ['js/**/*', 'manifest.json'],
-      copyUnmodified: false,
-    }),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin(
       {
-        from: './src/manifest.json',
-        transform(content) {
-          return fillUpManifest(content);
-        },
-      },
-    ]),
+        patterns: [
+          {
+            from: './src',
+            globOptions: {
+              ignore: ['js/**/*', 'manifest.json'],
+            },
+          },
+        ],
+      }
+    ),
+    new CopyWebpackPlugin(
+      {
+        patterns: [
+          {
+            from: './src/manifest.json',
+            transform(content) {
+              return fillUpManifest(content);
+            }
+          }
+        ]
+      }
+    ),
   ],
   watch: true,
 });

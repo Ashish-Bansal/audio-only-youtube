@@ -4,7 +4,7 @@
   "version": "0.8.2",
   "description": "Enables you to disable video streams on youtube and listen audio",
   "engines": {
-    "node": "10.18.0"
+    "node": ">=16.13.1"
   },
   "scripts": {
     "build": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
@@ -13,27 +13,27 @@
     "prettier": "prettier 'src/**/*.@(js|json)' --write"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^5.0.0",
-    "webpack": "^4.29.6",
-    "zip-webpack-plugin": "^3.0.0"
+    "copy-webpack-plugin": "^11.0.0",
+    "webpack": "^5.88.0",
+    "zip-webpack-plugin": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/plugin-proposal-class-properties": "^7.3.4",
-    "@babel/plugin-proposal-function-bind": "^7.2.0",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/preset-typescript": "^7.3.3",
-    "@types/chrome": "^0.0.81",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.5",
-    "eslint": "^5.15.1",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "prettier": "^1.16.4",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.3.3333",
-    "webpack-cli": "^3.2.3"
+    "@babel/core": "^7.22.5",
+    "@babel/eslint-parser": "^7.22.5",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-function-bind": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@types/chrome": "^0.0.238",
+    "babel-loader": "^9.1.2",
+    "eslint": "^8.43.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-standard": "^5.0.0",
+    "prettier": "^2.8.8",
+    "ts-loader": "^9.4.3",
+    "typescript": "^5.1.3",
+    "webpack-cli": "^5.1.4"
   }
 }
