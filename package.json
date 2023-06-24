@@ -1,7 +1,7 @@
 {
   "name": "audio-only-youtube",
   "displayName": "Audio Only Youtube",
-  "version": "0.8.2",
+  "version": "0.10.0",
   "description": "Enables you to disable video streams on youtube and listen audio",
   "engines": {
     "node": ">=16.13.1"
