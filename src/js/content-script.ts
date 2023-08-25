@@ -67,7 +67,7 @@ function showAudioOnlyInformation(videoElement: HTMLVideoElement) {
     alertText.className = 'alert_text';
     alertText.innerHTML =
       'Audio Only. To watch video, ' +
-      'click on the extension icon above and refresh your page.';
+      'click on the extension icon above.';
 
     extensionAlert.appendChild(alertText);
     const videoParent = videoElement.parentNode;
