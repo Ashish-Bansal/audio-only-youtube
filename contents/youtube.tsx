@@ -132,7 +132,9 @@ export default function Youtube() {
           let curTime = videoElement.currentTime;
           videoElement.src = url;
           videoElement.currentTime = curTime;
-          videoElement.play();
+          videoElement.play().catch(() => {
+            console.log('Audio Only Youtube - Video element not playable!');
+          });
         }
         return setAudioURL;
       }
