@@ -17,4 +17,16 @@
   position: relative;
   top: 10%;
   text-align: center;
+  color: #f8f8f8;
+
+  /* Text outline/shadow for better visibility on any background */
+  text-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.8),
+    0px -1px 2px rgba(0, 0, 0, 0.8),
+    1px 0px 2px rgba(0, 0, 0, 0.8),
+    -1px 0px 2px rgba(0, 0, 0, 0.8);
+
+  /* Optional: makes text slightly bolder for better readability */
+  font-weight: 600;
+  ;
 }
