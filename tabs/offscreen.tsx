@@ -9,7 +9,6 @@ export default function Offscreen() {
                 return;
             }
 
-            // const data = event.data;
             chrome.runtime.sendMessage({
                 target: 'background',
                 data: event.data,

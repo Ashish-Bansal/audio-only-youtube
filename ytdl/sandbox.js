@@ -2,18 +2,7 @@ const querystring = require('querystring');
 
 const evaluationPromiseMapping = new Map()
 let creating; // A global promise to avoid concurrency issues
-async function setupSandbox() {
-  // Check all windows controlled by the service worker to see if one
-  // of them is the offscreen document with the given path
-  const existingContexts = await chrome.runtime.getContexts({
-    contextTypes: ['OFFSCREEN_DOCUMENT'],
-  });
-
-  if (existingContexts.length > 0) {
-    return;
-  }
-
-  // create offscreen document
+const createOffscreenDocument = async () => {
   if (creating) {
     await creating;
   } else {
@@ -35,6 +24,21 @@ async function setupSandbox() {
     if (!resolver) return false;
     resolver(message.data.result)
   });
+}
+createOffscreenDocument();
+
+
+async function setupSandbox() {
+  // Check all windows controlled by the service worker to see if one
+  // of them is the offscreen document with the given path
+  const existingContexts = await chrome.runtime.getContexts({
+    contextTypes: ['OFFSCREEN_DOCUMENT'],
+  });
+  if (existingContexts.length > 0) {
+    return;
+  }
+
+  await createOffscreenDocument();
 }
 
 const randomString = (length) => {
