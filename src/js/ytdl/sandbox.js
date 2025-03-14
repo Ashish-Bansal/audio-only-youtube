@@ -1,3 +1,4 @@
+const querystring = require('querystring');
 
 const evaluationPromiseMapping = new Map()
 let creating; // A global promise to avoid concurrency issues

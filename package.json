@@ -13,7 +13,7 @@
     "prettier": "prettier 'src/**/*.@(js|json)' --write"
   },
   "dependencies": {
-    "axios": "^1.7.5",
+    "axios": "^1.8.3",
     "buffer": "^6.0.3",
     "querystring-es3": "^0.2.1",
     "sax": "^1.4.1",
