@@ -1,9 +1,7 @@
+import ytdl from './ytdl'
+
 class Background {
-  private tabIds = new Map();
-
   constructor() {
-    this.tabIds = new Map();
-
     chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
       let disabled = values.audio_only_youtube_disabled;
       if (typeof disabled === 'undefined') {
@@ -47,44 +45,49 @@ class Background {
     });
   }
 
-  removeURLParameters = (url: string, parameters: any[]) => {
-    const urlParts = url.split('?');
-    if (urlParts.length < 2) return;
+  onTabUpdated = async (tabId: number, changeInfo: {url?: string}) => {
+    if (!changeInfo.url) return;
 
-    let currentParameters = urlParts[1].split(/[&;]/g);
-    const encodedParameters = parameters.map(
-      (para) => `${encodeURIComponent(para)}=`
-    );
-    const filteredParameters = currentParameters.filter(
-      (p) => !encodedParameters.some((enc) => p.startsWith(enc))
-    );
+    const url = changeInfo.url
+    const urlObj = new URL(url);
+    const params = new URLSearchParams(urlObj.search);
+    const videoId = params.get('v');
+    if (!videoId) return;
+    console.info('Fetching audio only for video ID', videoId);
 
-    return `${urlParts[0]}?${filteredParameters.join('&')}`;
-  };
+    try {
+      const info = await ytdl.getInfo(videoId, {});
+      const typedInfo = info as {videoDetails: {isLive: boolean}, formats: [{url: string; container: string; hasAudio: boolean; hasVideo: boolean; isLive: boolean}]}
+      if (!typedInfo) {
+        console.error('No video info found');
+        return;
+      }
+      if (typedInfo.videoDetails.isLive) {
+        console.info('Video is live, skipping');
+        return;
+      }
+      console.info('Video Info for', videoId, info);
 
-  processRequest = (details: any) => {
-    const { url, tabId } = details;
-    if (!url.includes('mime=audio')) return;
+      for (const item of typedInfo.formats) {
+        if (item.hasAudio && !item.hasVideo) {
+          try {
+            const response = await fetch(item.url, {method: 'HEAD'});
+            if (response.ok) {
+              console.info('Audio only format found for video', videoId, item.url);
+              chrome.tabs.sendMessage(tabId, {
+                url: item.url,
+              });
+              return;
+            }
+          } catch (err) {
+            continue;
+          }
+        }
+      }
 
-    if (url.includes('live=1')) {
-      this.tabIds.set(tabId, '');
-      this.sendMessage(tabId);
-      return;
-    }
-
-    const parametersToBeRemoved = ['range', 'rn', 'rbuf', 'ump'];
-    const audioURL = this.removeURLParameters(url, parametersToBeRemoved);
-    if (audioURL && this.tabIds.get(tabId) !== audioURL) {
-      this.tabIds.set(tabId, audioURL);
-      this.sendMessage(tabId);
-    }
-  };
-
-  sendMessage = (tabId: number) => {
-    if (this.tabIds.has(tabId)) {
-      chrome.tabs.sendMessage(tabId, {
-        url: this.tabIds.get(tabId),
-      });
+      console.error('No audio only format found');
+    } catch (err) {
+      console.error('Error getting video info:', err);
     }
   };
 
@@ -95,11 +98,7 @@ class Background {
         "38": "../img/icon38.png",
       },
     });
-    chrome.tabs.onUpdated.addListener(this.sendMessage);
-    chrome.webRequest.onBeforeRequest.addListener(
-      this.processRequest,
-      { urls: ['<all_urls>'] },
-    );
+    chrome.tabs.onUpdated.addListener(this.onTabUpdated);
   };
 
   disableExtension = () => {
@@ -109,9 +108,7 @@ class Background {
         "38": "../img/disabled_icon38.png",
       },
     });
-    chrome.tabs.onUpdated.removeListener(this.sendMessage);
-    chrome.webRequest.onBeforeRequest.removeListener(this.processRequest);
-    this.tabIds.clear();
+    chrome.tabs.onUpdated.removeListener(this.onTabUpdated);
   };
 
   saveSettings = (disabled: boolean) => {

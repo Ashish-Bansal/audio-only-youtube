@@ -17,7 +17,8 @@
   "permissions": [
     "tabs",
     "webRequest",
-    "storage"
+    "storage",
+    "offscreen"
   ],
   "host_permissions": [
     "*://www.youtube.com/*",
@@ -36,5 +37,10 @@
       "all_frames": true
     }
   ],
-  "options_page": "html/options.html"
+  "options_page": "html/options.html",
+  "sandbox": {
+    "pages": [
+      "html/sandbox.html"
+    ]
+  }
 }

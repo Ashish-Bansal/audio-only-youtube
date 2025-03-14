@@ -1,0 +1,17 @@
+<head>
+    <title>Sandbox</title>
+</head>
+
+<script>
+      window.addEventListener('message', async function (event) {
+        const data = event.data;
+        const messageId = data.messageId;
+        const argumentName = data.argumentName;
+        const argumentValue = data.argumentValue;
+        const script = data.script;
+
+        const wholeScript = `let ${argumentName} = "${argumentValue}"; ` + script
+        const result = eval(wholeScript)
+        event.source.postMessage({ messageId, result: result}, event.origin);
+      });
+</script>

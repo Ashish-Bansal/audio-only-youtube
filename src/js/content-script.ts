@@ -139,7 +139,10 @@ chrome.runtime.onMessage.addListener((request) => {
     return;
   }
 
-  videoElement.onloadeddata = makeSetAudioURL(videoElement, url);
+  const setAudioUrl = makeSetAudioURL(videoElement, url);
+  videoElement.onloadeddata = setAudioUrl
+  setAudioUrl()
+
   if (url) {
     applyVideoPlayerStyling(videoElement);
   } else {

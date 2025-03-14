@@ -17,7 +17,7 @@ module.exports = _.merge({}, config, {
           {
             from: './src',
             globOptions: {
-              ignore: ['js/**/*', 'manifest.json'],
+              ignore: ['**/js/*', '**/manifest.json'],
             },
           },
         ],
@@ -37,4 +37,14 @@ module.exports = _.merge({}, config, {
     ),
   ],
   watch: true,
+  target: 'web',
+  resolve: {
+    fallback: {
+      "buffer": require.resolve("buffer/"),
+      "string_decoder": require.resolve("string_decoder/"),
+      "timers": require.resolve("timers-browserify"),
+      "stream": require.resolve("stream-browserify"),
+      "querystring": require.resolve("querystring-es3"),
+    }
+  }
 });
