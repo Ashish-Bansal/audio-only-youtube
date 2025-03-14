@@ -7,16 +7,20 @@ audio-only-youtube chrome extension enables you to disable the video on YouTube 
 
 Note: It doesn't support YouTube live videos.
 
-## Installation
+## How to Use
 
-[You can install the extension from here (Chrome Webstore)](https://chrome.google.com/webstore/detail/audio-only-youtube/pkocpiliahoaohbolmkelakpiphnllog)
+1. Install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/audio-only-youtube/pkocpiliahoaohbolmkelakpiphnllog).
+2. 📌 Pin the extension to your toolbar by opening the Extensions menu (the puzzle piece icon) and clicking the pin next to "Audio Only Youtube".
+3. Navigate to any YouTube video; the extension will automatically enable audio-only mode for videos.
+4. Toggle audio-only mode by clicking the extension icon:
+   - If you click it when audio-only mode is ON, the icon turns **Grayscale**, and the page refreshes so you can watch the video normally.
+   - Clicking it again toggles it from Grayscale to Chromatic and reactivates audio-only mode.
 
 ## Contribute
 
 1. After cloning the repo, run `yarn run dev`.
-2. Open Chrome, go to the Extensions tab, click **Load unpacked**, and select
-   the `build/chrome-mv3-dev` directory.
-3. Play YouTube video and see the extension in action.
+2. Open Chrome, go to the **Extensions** tab, click **Load unpacked**, and select the `build/chrome-mv3-dev` directory.
+3. Play a YouTube video and see the extension in action.
 
 **Thanks to Stefan Ivic for all the icons used in the extension.**
 
