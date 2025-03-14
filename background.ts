@@ -1,5 +1,10 @@
 import ytdl from './ytdl'
 
+import activeIcon19 from "data-base64:./assets/active-19.png"
+import activeIcon38 from "data-base64:./assets/active-38.png"
+import inactiveIcon19 from "data-base64:./assets/inactive-19.png"
+import inactiveIcon38 from "data-base64:./assets/inactive-38.png"
+
 class Background {
   constructor() {
     chrome.storage.local.get('audio_only_youtube_disabled', (values) => {
@@ -44,6 +49,7 @@ class Background {
       );
     });
   }
+
 
   onTabUpdated = async (tabId: number, changeInfo: {url?: string}) => {
     if (!changeInfo.url) return;
@@ -91,11 +97,12 @@ class Background {
     }
   };
 
+
   enableExtension = () => {
     chrome.action.setIcon({
       path: {
-        "19": "../img/icon19.png",
-        "38": "../img/icon38.png",
+        "19": activeIcon19,
+        "38": activeIcon38,
       },
     });
     chrome.tabs.onUpdated.addListener(this.onTabUpdated);
@@ -104,15 +111,15 @@ class Background {
   disableExtension = () => {
     chrome.action.setIcon({
       path: {
-        "19": "../img/disabled_icon19.png",
-        "38": "../img/disabled_icon38.png",
+        "19": inactiveIcon19,
+        "38": inactiveIcon38,
       },
     });
     chrome.tabs.onUpdated.removeListener(this.onTabUpdated);
   };
 
   saveSettings = (disabled: boolean) => {
-    chrome.storage.local.set({ audio_only_youtube_disabled: disabled }); // eslint-disable-line
+    chrome.storage.local.set({ audio_only_youtube_disabled: disabled });
   };
 }
 

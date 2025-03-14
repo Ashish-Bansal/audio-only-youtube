@@ -18,7 +18,7 @@ async function setupSandbox() {
     await creating;
   } else {
     creating = chrome.offscreen.createDocument({
-      url: 'html/offscreen.html',
+      url: 'tabs/offscreen.html',
       reasons: ['DOM_SCRAPING'],
       justification: 'Create Sandbox document for running evals',
     });

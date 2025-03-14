@@ -1,5 +1,6 @@
-const axios = require('axios');
+import axios from 'axios';
 const FORMATS = require('./formats')
+
 
 /**
  * Extract string inbetween another.
