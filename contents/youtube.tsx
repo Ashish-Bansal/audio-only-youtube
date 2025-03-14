@@ -129,8 +129,9 @@ export default function Youtube() {
           }
 
           videoElement.pause();
+          let curTime = videoElement.currentTime;
           videoElement.src = url;
-          videoElement.currentTime = 0;
+          videoElement.currentTime = curTime;
           videoElement.play();
         }
         return setAudioURL;
